@@ -12,6 +12,7 @@ INSTALL
      $ git clone https://github.com/sonnguyenthai/questionnaire.git
      $ cd questionnaire
      $ composer install
+     $ php bin/console server:run
     ~~~
 - Enjoy!
 
