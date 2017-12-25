@@ -19,9 +19,41 @@ class User extends BaseUser
      */
     protected $id;
 
+    /**
+     * @ORM\Is_admin
+     * @ORM\Column(type="boolean")
+     * @ORM\GeneratedValue(default=false)
+     */
+    protected $is_admin;
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
     }
+
+    /**
+     * Set isAdmin
+     *
+     * @param boolean $isAdmin
+     *
+     * @return User
+     */
+    public function setIsAdmin($isAdmin)
+    {
+        $this->is_admin = $isAdmin;
+
+        return $this;
+    }
+
+    /**
+     * Get isAdmin
+     *
+     * @return boolean
+     */
+    public function getIsAdmin()
+    {
+        return $this->is_admin;
+    }
 }
+

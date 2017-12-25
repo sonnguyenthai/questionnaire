@@ -6,3 +6,8 @@ AppBundle\Entity\User:
             type: integer
             generator:
                 strategy: AUTO
+    fields:
+        is_admin:
+          type: boolean
+          options:
+            default: false
