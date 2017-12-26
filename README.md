@@ -22,7 +22,7 @@ INSTALL
     ~~~
     $ php bin/console doctrine:generate:entities AppBundle
     ~~~
-- For updating schema:
+- For updating schema (run this command after changing schema to apply changes):
     ~~~
     $ php bin/console doctrine:schema:update --force
     ~~~  
