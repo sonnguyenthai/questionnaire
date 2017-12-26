@@ -1,0 +1,40 @@
+AppBundle\Entity\Answer:
+    type:  entity
+    table: answer
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        content:
+            type: text
+        respondent:
+            type: string
+            lenght: 50
+        created_date:
+            type: datetime
+            options:
+              default: 0
+        modified_date:
+            type: datetime
+            options:
+              default: 0
+    manyToOne:
+        survey_question:
+          targetEntity: AppBundle\Entity\SurveyQuestion
+          joinColumn:
+            name: survey_question_id
+            referencedColumnName: id
+            onDelete: CASCADE
+    manyToMany:
+        choices:
+          targetEntity: AppBundle\Entity\Choice
+          joinTable:
+            name: answer_choice
+            joinColumns:
+              answer_id:
+                referencedColumnName: id
+            inverseJoinColumns:
+              choice_id:
+                referencedColumnName: id

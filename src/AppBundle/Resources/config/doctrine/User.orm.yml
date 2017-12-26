@@ -11,3 +11,9 @@ AppBundle\Entity\User:
           type: boolean
           options:
             default: false
+        first_name:
+          type: string
+          lenght: 50
+        last_name:
+          type: string
+          lenght: 50
