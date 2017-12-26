@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block content %}
-    <h1> Hello mr {{ app.user.username }}</h1>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <h1> Hello mr {{ app.user.username }}</h1>
+    {% else %}
+        <h1> You are not logged in. Click <a href="/login">here</a> to login. Or <a href="/register">register</a> if you don't have an account yet</h1>
+    {% endif %}
 {% endblock %}

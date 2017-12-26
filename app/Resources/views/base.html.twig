@@ -50,7 +50,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="index.html">SB Admin v2.0</a>
+                        <a class="navbar-brand" href="index.html">Questionnaire Project</a>
                     </div>
                     <!-- /.navbar-header -->
                 {% endblock %}
@@ -58,21 +58,21 @@
                 {% block top_nav %}
                     <ul class="nav navbar-top-links navbar-right">
                         <!-- /.dropdown -->
-                        <li class="dropdown">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="fa fa-user fa-fw"></i>{{ app.user.username }} <i class="fa fa-caret-down"></i>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user">
-                                <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                                </li>
-                                <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                                </li>
-                            </ul>
-                            <!-- /.dropdown-user -->
-                        </li>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-user fa-fw"></i>{{ app.user.username }} <i class="fa fa-caret-down"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                                    </li>
+                                    <li class="divider"></li>
+                                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                                    </li>
+                                </ul>
+                                <!-- /.dropdown-user -->
+                            </li>
+                        {% endif %}
                         <!-- /.dropdown -->
                     </ul>
                     <!-- /.navbar-top-links -->
@@ -83,7 +83,13 @@
                         <div class="sidebar-nav navbar-collapse">
                             <ul class="nav" id="side-menu">
                                 <li>
-                                    <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                                    <a href=""><i class="fa fa-dashboard fa-fw"></i> Surveys</a>
+                                </li>
+                                <li>
+                                    <a href=""><i class="fa fa-dashboard fa-fw"></i> Questions</a>
+                                </li>
+                                <li>
+                                    <a href=""><i class="fa fa-dashboard fa-fw"></i> User Settings</a>
                                 </li>
                             </ul>
                         </div>
