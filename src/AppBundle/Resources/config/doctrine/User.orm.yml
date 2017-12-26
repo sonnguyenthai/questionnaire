@@ -7,10 +7,6 @@ AppBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
-        is_admin:
-          type: boolean
-          options:
-            default: false
         first_name:
           type: string
           lenght: 50

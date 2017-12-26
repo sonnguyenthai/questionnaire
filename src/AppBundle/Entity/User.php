@@ -25,34 +25,7 @@ class User extends BaseUser
         // your own logic
     }
 
-    /**
-     * @var boolean
-     */
-    private $is_admin = 0;
 
-    /**
-     * Set isAdmin
-     *
-     * @param boolean $isAdmin
-     *
-     * @return User
-     */
-    public function setIsAdmin($isAdmin)
-    {
-        $this->is_admin = $isAdmin;
-
-        return $this;
-    }
-
-    /**
-     * Get isAdmin
-     *
-     * @return boolean
-     */
-    public function getIsAdmin()
-    {
-        return $this->is_admin;
-    }
     /**
      * @var string
      */
