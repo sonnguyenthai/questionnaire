@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-#use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #uncomment if you use it
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
