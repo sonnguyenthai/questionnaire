@@ -1,0 +1,20 @@
+AppBundle\Entity\Respondent:
+    type:  entity
+    table: respondent
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+          type: string
+          lenght: 50
+        timestamp:
+          type: datetime
+    manyToOne:
+        survey:
+          targetEntity: AppBundle\Entity\Survey
+          joinColumn:
+            name: survey_id
+            referencedColumnName: id

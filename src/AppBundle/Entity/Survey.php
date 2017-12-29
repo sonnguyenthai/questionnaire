@@ -38,6 +38,11 @@ class Survey
     private $user;
 
 
+    public function __construct()
+    {
+        $this->created_date = new \DateTime('now');
+        $this->modified_date = new \DateTime('now');
+    }
     /**
      * Get id
      *
