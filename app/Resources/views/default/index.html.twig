@@ -2,8 +2,41 @@
 
 {% block content %}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <h1> Hello mr {{ app.user.username }}</h1>
+    <div class="col-md-6">
+        <h2>
+            Enquêtes
+        </h2>
+        <p>
+            Description générale
+        </p>
+        <button type="button" class="btn btn-lg btn-block btn-info">
+            Voir la liste
+        </button>
+    </div>
+    <div class="col-md-6">
+        <h2>
+            Questions
+        </h2>
+        <p>
+            Description générale
+        </p>
+        <button type="button" class="btn btn-info btn-block btn-lg">
+            Voir la liste
+        </button>
+    </div>
     {% else %}
-        <h1> You are not logged in. Click <a href="/login">here</a> to login. Or <a href="/register">register</a> if you don't have an account yet</h1>
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h2>
+                    Bienvenue
+                </h2>
+                <p>
+                    Vous n'êtes pas connecté. Si vous avez un compte cliquez sur le bouton connexion. Sinon inscrivez-vous!! C'est rapide et gratuit!
+                </p>
+                <p>
+                    <a class="btn btn-primary btn-lg" href="/register">S'inscrire</a>
+                </p>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
