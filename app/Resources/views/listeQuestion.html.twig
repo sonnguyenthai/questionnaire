@@ -1,0 +1,17 @@
+{% extends "layout.html.twig" %}
+
+{% block questionnaire_body %}
+
+<ul class="nav nav-pills nav-stacked">
+    {% for question in listquestion %}
+        <li>
+            <a href="{{ path('question_view', {'id': question.id}) }}">
+                {{ question.content }}
+            </a>
+        </li>
+        {{ question.content }}
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
