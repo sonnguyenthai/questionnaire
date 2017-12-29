@@ -25,12 +25,12 @@ class Question
     /**
      * @var \DateTime
      */
-    private $created_date = 0;
+    private $created_date;
 
     /**
      * @var \DateTime
      */
-    private $modified_date = 0;
+    private $modified_date;
 
     /**
      * @var \AppBundle\Entity\User
@@ -38,6 +38,11 @@ class Question
     private $user;
 
 
+    public function __construct()
+    {
+        $this->created_date = new \DateTime('now');
+        $this->modified_date = new \DateTime('now');
+    }
     /**
      * Get id
      *
