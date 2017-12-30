@@ -1,0 +1,16 @@
+
+
+    {% block stylesheets %}
+        {# On charge le CSS de bootstrap depuis le site directement #}
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    {% endblock %}
+
+{% block body %}
+
+
+
+    {# On définit un nouveau bloc, que les vues du bundle pourront remplir #}
+    {% block questionnaire_body %}
+    {% endblock %}
+
+{% endblock %}

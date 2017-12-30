@@ -18,24 +18,24 @@ class Answer
     private $content;
 
     /**
-     * @var string
+     * @var \DateTime
      */
-    private $respondent;
+    private $created_date;
 
     /**
      * @var \DateTime
      */
-    private $created_date = 0;
-
-    /**
-     * @var \DateTime
-     */
-    private $modified_date = 0;
+    private $modified_date;
 
     /**
      * @var \AppBundle\Entity\SurveyQuestion
      */
     private $survey_question;
+
+    /**
+     * @var \AppBundle\Entity\Respondent
+     */
+    private $respondent;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -48,6 +48,8 @@ class Answer
     public function __construct()
     {
         $this->choices = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->created_date = new \DateTime('now');
+        $this->modified_date = new \DateTime('now');
     }
 
     /**
@@ -82,30 +84,6 @@ class Answer
     public function getContent()
     {
         return $this->content;
-    }
-
-    /**
-     * Set respondent
-     *
-     * @param string $respondent
-     *
-     * @return Answer
-     */
-    public function setRespondent($respondent)
-    {
-        $this->respondent = $respondent;
-
-        return $this;
-    }
-
-    /**
-     * Get respondent
-     *
-     * @return string
-     */
-    public function getRespondent()
-    {
-        return $this->respondent;
     }
 
     /**
@@ -181,6 +159,30 @@ class Answer
     }
 
     /**
+     * Set respondent
+     *
+     * @param \AppBundle\Entity\Respondent $respondent
+     *
+     * @return Answer
+     */
+    public function setRespondent(\AppBundle\Entity\Respondent $respondent = null)
+    {
+        $this->respondent = $respondent;
+
+        return $this;
+    }
+
+    /**
+     * Get respondent
+     *
+     * @return \AppBundle\Entity\Respondent
+     */
+    public function getRespondent()
+    {
+        return $this->respondent;
+    }
+
+    /**
      * Add choice
      *
      * @param \AppBundle\Entity\Choice $choice
@@ -214,3 +216,4 @@ class Answer
         return $this->choices;
     }
 }
+

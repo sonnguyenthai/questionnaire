@@ -3,9 +3,9 @@
 namespace AppBundle\Entity;
 
 /**
- * SurveyQuestion
+ * Respondent
  */
-class SurveyQuestion
+class Respondent
 {
     /**
      * @var integer
@@ -13,23 +13,24 @@ class SurveyQuestion
     private $id;
 
     /**
-     * @var \DateTime
+     * @var string
      */
-    private $created_date;
+    private $name;
 
     /**
-     * @var \AppBundle\Entity\Question
+     * @var \DateTime
      */
-    private $question;
+    private $timestamp;
 
     /**
      * @var \AppBundle\Entity\Survey
      */
     private $survey;
 
+
     public function __construct()
     {
-        $this->created_date = new \DateTime('now');
+        $this->timestamp = new \DateTime('now');
     }
 
     /**
@@ -43,51 +44,51 @@ class SurveyQuestion
     }
 
     /**
-     * Set createdDate
+     * Set name
      *
-     * @param \DateTime $createdDate
+     * @param string $name
      *
-     * @return SurveyQuestion
+     * @return Respondent
      */
-    public function setCreatedDate($createdDate)
+    public function setName($name)
     {
-        $this->created_date = $createdDate;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get createdDate
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set timestamp
+     *
+     * @param \DateTime $timestamp
+     *
+     * @return Respondent
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get timestamp
      *
      * @return \DateTime
      */
-    public function getCreatedDate()
+    public function getTimestamp()
     {
-        return $this->created_date;
-    }
-
-    /**
-     * Set question
-     *
-     * @param \AppBundle\Entity\Question $question
-     *
-     * @return SurveyQuestion
-     */
-    public function setQuestion(\AppBundle\Entity\Question $question = null)
-    {
-        $this->question = $question;
-
-        return $this;
-    }
-
-    /**
-     * Get question
-     *
-     * @return \AppBundle\Entity\Question
-     */
-    public function getQuestion()
-    {
-        return $this->question;
+        return $this->timestamp;
     }
 
     /**
@@ -95,7 +96,7 @@ class SurveyQuestion
      *
      * @param \AppBundle\Entity\Survey $survey
      *
-     * @return SurveyQuestion
+     * @return Respondent
      */
     public function setSurvey(\AppBundle\Entity\Survey $survey = null)
     {
@@ -114,3 +115,4 @@ class SurveyQuestion
         return $this->survey;
     }
 }
+

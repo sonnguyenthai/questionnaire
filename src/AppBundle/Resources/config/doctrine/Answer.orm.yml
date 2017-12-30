@@ -9,9 +9,6 @@ AppBundle\Entity\Answer:
     fields:
         content:
             type: text
-        respondent:
-            type: string
-            lenght: 50
         created_date:
             type: datetime
             options:
@@ -27,6 +24,11 @@ AppBundle\Entity\Answer:
             name: survey_question_id
             referencedColumnName: id
             onDelete: CASCADE
+        respondent:
+          targetEntity: AppBundle\Entity\Respondent
+          joinColumn:
+            name: respondent_id
+            referencedColumnName: id
     manyToMany:
         choices:
           targetEntity: AppBundle\Entity\Choice
