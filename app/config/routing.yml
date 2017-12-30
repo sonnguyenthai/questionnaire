@@ -4,6 +4,8 @@ app:
 
 logout:
     path: /logout
+home:
+    path: /
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"

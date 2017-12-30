@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ parent() }}
+    - Connexion
+{% endblock %}
 
 {% block page_content_title %}
     Connexion
@@ -32,7 +36,9 @@
             <div class="checkbox">
                 <label><input type="checkbox" name="remember"> Se souvenir de moi</label>
             </div>
-            <button type="submit">Connexion</button>
+            <button type="submit" class="btn btn-lg btn-primary btn-block">
+                Connexion
+            </button>
         </form>
     </div>
     <div class="col-md-4">
