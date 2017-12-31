@@ -6,4 +6,7 @@
 
 {% block content %}
     {{ sg_datatables_render(datatable) }}
+    <div class="form-group">
+        <a href="{{ path('survey_add') }}"><button type="button" class="btn-primary">Add New</button> </a>
+    </div>
 {% endblock %}

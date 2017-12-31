@@ -51,7 +51,7 @@ class SurveyController extends Controller
     }
 
     /**
-     * @Route("/survey/add", name="add_survey")
+     * @Route("/survey/add", name="survey_add")
      */
     public function addSurveyAction(Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
