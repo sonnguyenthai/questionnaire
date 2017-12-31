@@ -1,0 +1,90 @@
+{% extends "base.html.twig" %}
+
+{% block page_content_title %}
+    Edit Question
+{% endblock %}
+
+{% block content %}
+
+    <div class="well">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+        {# Les erreurs générales du formulaire. #}
+        {{ form_errors(form) }}
+
+        {# Génération manuelle et éclatée : #}
+        <div class="form-group">
+            <label>Question Type</label>
+            {{ form_errors(form.question_type) }}
+            {{ form_widget(form.question_type, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        {# Idem pour un autre champ. #}
+        <div class="form-group">
+            <label>Question Content</label>
+            {{ form_errors(form.content) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div class="form-group">
+            {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+        {# Génération automatique des champs pas encore écrits.
+           Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+           et tous les champs cachés (type « hidden »). #}
+        {{ form_rest(form) }}
+
+        {# Fermeture de la balise <form> du formulaire HTML #}
+        {{ form_end(form) }}
+    </div>
+
+    <div class="well" id="question_choices">
+        <div id="choices">
+            {% for choice in choices %}
+                <div class="form-group">
+                    <input type="text" class="form-control" value="{{ choice.content }}"  disabled>
+                    <button type="button"  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete_modal">Remove Choice</button>
+                </div>
+                <div id="delete_modal" class="modal fade" role="dialog">
+                    {{ render(controller(
+                    'AppBundle:Question:removeChoice',
+                    { 'question_id': question.id, 'id': choice.id }
+                    )) }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Trigger the modal with a button -->
+        <div class="form-group">
+            <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Choice</button>
+        </div>
+    </div>
+    <!-- Modal -->
+
+    <div id="myModal" class="modal fade" role="dialog">
+        {{ render(controller(
+        'AppBundle:Question:addChoice',
+        { 'id': question.id }
+        )) }}
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            if ($("#appbundle_question_question_type").val() == "text")
+                $("#question_choices").hide();
+            $("#appbundle_question_question_type").change(function () {
+                if ($(this).val() != "text"){
+                    $("#question_choices").show();
+                }else{
+                    $("#question_choices").hide();
+                }
+            });
+
+        });
+    </script>
+{% endblock %}
