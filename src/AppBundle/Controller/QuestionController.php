@@ -29,7 +29,7 @@ class QuestionController extends Controller
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository(Question::class)->findAll();
 
-        return $this->render('listeQuestion.html.twig',array('question'=>$question,"listquestion"=>count($question)));
+        return $this->render('listeQuestion.html.twig',array('questions'=>$question));
 
     }
 
