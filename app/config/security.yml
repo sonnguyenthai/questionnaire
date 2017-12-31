@@ -1,3 +1,4 @@
+
 security:
     encoders:
         FOS\UserBundle\Model\UserInterface: bcrypt
@@ -27,6 +28,7 @@ security:
                 path: /logout
                 target: /
             anonymous:    true
+            #logout_on_user_change: true
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
