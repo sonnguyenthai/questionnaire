@@ -157,4 +157,3 @@ class Respondent
         return $this->survey;
     }
 }
-

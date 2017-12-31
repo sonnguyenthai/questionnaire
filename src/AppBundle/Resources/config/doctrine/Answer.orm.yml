@@ -29,6 +29,7 @@ AppBundle\Entity\Answer:
           joinColumn:
             name: respondent_id
             referencedColumnName: id
+            onDelete: CASCADE
     manyToMany:
         choices:
           targetEntity: AppBundle\Entity\Choice

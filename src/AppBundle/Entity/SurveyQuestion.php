@@ -157,4 +157,3 @@ class SurveyQuestion
         return $this->survey;
     }
 }
-

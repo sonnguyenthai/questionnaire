@@ -216,4 +216,3 @@ class Survey
         return $this->user;
     }
 }
-

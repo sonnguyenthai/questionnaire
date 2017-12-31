@@ -81,4 +81,3 @@ class Choice
         return $this->question;
     }
 }
-

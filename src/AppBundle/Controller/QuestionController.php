@@ -154,13 +154,47 @@ class QuestionController extends Controller
 
     }
 
-
     /**
      * Add new question.
      *
      * @Route("/question/{id}/delete", name="question_delete")
      */
     public function deleteAction($id, Request $request)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('AppBundle:Question')->find($id);
+
+        if (null === $question) {
+            throw new NotFoundHttpException("La question d'id ".$id." n'existe pas.");
+        }
+
+        // On crée un formulaire vide, qui ne contiendra que le champ CSRF
+        // Cela permet de protéger la suppression de la question contre cette faille
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('question_delete', array('id'=>$id)))->getForm();
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em->remove($question);
+            $em->flush();
+
+            $this->addFlash('success', "La question ".$id." a bien été supprimée.");
+
+            return $this->redirectToRoute('list_questions');
+        }
+
+        return $this->render('question/deleteQuestion.html.twig', array(
+            'question' => $question,
+            'form'   => $form->createView(),
+        ));
+    }
+
+    /**
+     * Add new question.
+     *
+     * @Route("/question/{id}/delete2", name="question_delete2")
+     */
+    public function deleteAction2($id, Request $request)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -239,6 +273,7 @@ class QuestionController extends Controller
 
     /**
      * Add Choice entity
+     *
      * @Route("question/{id}/add-choice", name="choice_add")
      * @Method({"POST", "GET"})
      */
@@ -268,33 +303,4 @@ class QuestionController extends Controller
         }
     }
 
-    /**
-     * Add Choice entity
-     * @Route("choice/add2", name="choice_add2")
-     * @Method({"POST"})
-     */
-    public function addChoiceAction2(Request $request){
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $id = $request->request->get('question_id');
-        $content = $request->request->get('choice_content');
-        if ($id){
-            $em = $this->getDoctrine()->getManager();
-            $question = $em->getRepository('AppBundle:Question')->find($id);
-            if ($question){
-                $choice = new Choice();
-                $choice->setQuestion($question);
-                $choice->setContent($content);
-                $em->persist($choice);
-                $em->flush();
-                $this->addFlash('success', 'Added Choice successfully for Question '.$id);
-            }else{
-                $this->addFlash('danger', 'Can not find Question object with ID ='.$id);
-            }
-        }else{
-            $this->addFlash('danger', 'Question ID is empty');
-        }
-
-        return $this->redirectToRoute('question_edit',array('id'=>$id));
-    }
 }

@@ -17,11 +17,13 @@ AppBundle\Entity\SurveyQuestion:
           joinColumn:
             name: question_id
             referencedColumnName: id
+            onDelete: CASCADE
         survey:
           targetEntity: AppBundle\Entity\Survey
           joinColumn:
             name: survey_id
             referencedColumnName: id
+            onDelete: CASCADE
     oneToMany:
         answers:
           targetEntity: AppBundle\Entity\Answer

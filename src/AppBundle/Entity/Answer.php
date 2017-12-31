@@ -216,4 +216,3 @@ class Answer
         return $this->choices;
     }
 }
-

@@ -83,7 +83,21 @@ class QuestionDatatable extends AbstractDatatable
                             'rel' => 'tooltip',
                             'title' => $this->translator->trans('sg.datatables.actions.edit'),
                             'class' => 'btn btn-primary btn-xs',
-                            'role' => 'button'
+                            'role' => 'button',
+                        ),
+                    ),
+                    array(
+                        'route' => 'question_delete',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => 'Delete',
+                        'icon' => 'glyphicon glyphicon-remove',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => 'Delete',
+                            'class' => 'btn btn-danger btn-xs',
+                            'role' => 'button',
                         ),
                     )
                 )
