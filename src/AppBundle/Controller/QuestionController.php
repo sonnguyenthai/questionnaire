@@ -63,7 +63,6 @@ class QuestionController extends Controller
         return $this->render('question/listQuestions.html.twig', array(
             'datatable' => $datatable,
         ));
-
     }
 
     public function viewAction($id)
