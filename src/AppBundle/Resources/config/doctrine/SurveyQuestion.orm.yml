@@ -22,3 +22,7 @@ AppBundle\Entity\SurveyQuestion:
           joinColumn:
             name: survey_id
             referencedColumnName: id
+    oneToMany:
+        answers:
+          targetEntity: AppBundle\Entity\Answer
+          mappedBy: survey_question

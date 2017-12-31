@@ -1,0 +1,74 @@
+{% extends "base.html.twig" %}
+
+{% block page_content_title %}
+    Add new Question
+{% endblock %}
+
+{% block content %}
+
+    <div class="well">
+        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+        {# Les erreurs générales du formulaire. #}
+        {{ form_errors(form) }}
+
+        {# Génération manuelle et éclatée : #}
+        <div class="form-group">
+            <label>Question Type</label>
+            {{ form_errors(form.question_type) }}
+            {{ form_widget(form.question_type, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        {# Idem pour un autre champ. #}
+        <div class="form-group">
+            <label>Question Content</label>
+            {{ form_errors(form.content) }}
+            {{ form_widget(form.content, {'attr': {'class': 'form-control'}}) }}
+        </div>
+
+        <div ng-app="addChoice" ng-controller="cntr" id="add_choice_div" style="padding-bottom: 5px;">
+            <div ng-repeat="item in inputs" class="form-group">
+                <label>Choice</label>
+                <input ng-model="item.value" name="choice[]" class="form-control" />
+            </div>
+            <button type="button" ng-click="addfield()" id="add_field_btn" class="btn-default" disabled>Add Choice</button>
+        </div>
+
+        <div class="form-group">
+        {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+        </div>
+        {# Génération automatique des champs pas encore écrits.
+           Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
+           et tous les champs cachés (type « hidden »). #}
+        {{ form_rest(form) }}
+
+        {# Fermeture de la balise <form> du formulaire HTML #}
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript">
+        var app = angular.module("addChoice", []);
+        app.controller('cntr',function($scope){
+            $scope.inputs = [];
+            $scope.addfield=function(){
+                $scope.inputs.push({})
+            }
+        });
+        $(document).ready(function () {
+            $("#add_choice_div").hide();
+            $("#appbundle_question_question_type").change(function () {
+                if ($(this).val() != "text"){
+                    $("#add_choice_div").show();
+                    $("#add_field_btn").prop("disabled", false);
+                }else{
+                    $("#add_choice_div").hide();
+                    $("#add_field_btn").prop("disabled", true);
+                }
+            });
+        });
+    </script>
+{% endblock %}

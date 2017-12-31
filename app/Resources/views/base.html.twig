@@ -69,6 +69,10 @@
                                         <ul class="dropdown-menu dropdown-user">
                                             <li class="disabled"><a href="/userprofile"><i class="fa fa-user fa-fw"></i> Mon compte</a>
                                             </li>
+                                            <li><a href="{{ path('list_questions') }}"><i class="fa fa-user fa-fw"></i> Questions</a>
+                                            </li>
+                                            <li><a href="{{ path('list_surveys') }}"><i class="fa fa-user fa-fw"></i> Surveys</a>
+                                            </li>
                                             <li class="divider"></li>
                                             <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
                                             </li>
@@ -96,6 +100,16 @@
                     {% endblock %}
                     </h3>
                     <div class="row">
+                        {# pass an array argument to get the messages of those types  #}
+                        {% for label, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ label }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                    <div class="row">
                         {% block content %} {% endblock %}
                     </div>
                 {% endblock %}
@@ -103,25 +117,26 @@
                 <!-- /#wrapper -->
             {% endblock %}
 
-            {% block javascript %}
-                <!-- jQuery -->
-                <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
-
-                <!-- Bootstrap Core JavaScript -->
-                <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-
-                <!-- Metis Menu Plugin JavaScript -->
-                <script src="{{ asset('vendor/metisMenu/metisMenu.min.js') }}"></script>
-
-                <!-- Custom Theme JavaScript -->
-                <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
-            {% endblock %}
-
-            {% block custom_js %}{% endblock %}
-
         </div>
     </div>
 </div>
+{% block javascript %}
+    <!-- jQuery -->
+    <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{{ asset('vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{{ asset('vendor/metisMenu/metisMenu.min.js') }}"></script>
+    <script src="https://code.angularjs.org/1.3.0-beta.5/angular.js"></script>
+    <script data-require="ui-bootstrap@*" data-semver="0.10.0" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.10.0.js"></script>
+    <script src="{{ asset('js/angular-modal-form.js') }}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="{{ asset('js/sb-admin-2.min.js') }}"></script>
+{% endblock %}
+
+{% block custom_js %}{% endblock %}
 </body>
 
 </html>
