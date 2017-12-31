@@ -99,6 +99,20 @@ class SurveyDatatable extends AbstractDatatable
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
+                    ),
+                    array(
+                        'route' => 'survey_delete',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => 'Delete',
+                        'icon' => 'glyphicon glyphicon-remove',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => 'Delete',
+                            'class' => 'btn btn-danger btn-xs',
+                            'role' => 'button'
+                        ),
                     )
                 )
             ))
