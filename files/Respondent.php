@@ -23,21 +23,13 @@ class Respondent
     private $timestamp;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $answers;
-
-    /**
      * @var \AppBundle\Entity\Survey
      */
     private $survey;
 
-    /**
-     * Constructor
-     */
+
     public function __construct()
     {
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->timestamp = new \DateTime('now');
     }
 
@@ -100,40 +92,6 @@ class Respondent
     }
 
     /**
-     * Add answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     *
-     * @return Respondent
-     */
-    public function addAnswer(\AppBundle\Entity\Answer $answer)
-    {
-        $this->answers[] = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Remove answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     */
-    public function removeAnswer(\AppBundle\Entity\Answer $answer)
-    {
-        $this->answers->removeElement($answer);
-    }
-
-    /**
-     * Get answers
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
-    }
-
-    /**
      * Set survey
      *
      * @param \AppBundle\Entity\Survey $survey
@@ -157,3 +115,4 @@ class Respondent
         return $this->survey;
     }
 }
+

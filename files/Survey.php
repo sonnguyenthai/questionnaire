@@ -14,11 +14,13 @@ class Survey
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -33,25 +35,16 @@ class Survey
     private $modified_date = 0;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $questions;
-
-    /**
      * @var \AppBundle\Entity\User
      */
     private $user;
 
-    /**
-     * Constructor
-     */
+
     public function __construct()
     {
-        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_date = new \DateTime('now');
         $this->modified_date = new \DateTime('now');
     }
-
     /**
      * Get id
      *
@@ -156,40 +149,6 @@ class Survey
     public function getModifiedDate()
     {
         return $this->modified_date;
-    }
-
-    /**
-     * Add question
-     *
-     * @param \AppBundle\Entity\SurveyQuestion $question
-     *
-     * @return Survey
-     */
-    public function addQuestion(\AppBundle\Entity\SurveyQuestion $question)
-    {
-        $this->questions[] = $question;
-
-        return $this;
-    }
-
-    /**
-     * Remove question
-     *
-     * @param \AppBundle\Entity\SurveyQuestion $question
-     */
-    public function removeQuestion(\AppBundle\Entity\SurveyQuestion $question)
-    {
-        $this->questions->removeElement($question);
-    }
-
-    /**
-     * Get questions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getQuestions()
-    {
-        return $this->questions;
     }
 
     /**

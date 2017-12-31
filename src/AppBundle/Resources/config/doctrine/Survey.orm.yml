@@ -26,3 +26,8 @@ AppBundle\Entity\Survey:
           joinColumn:
             name: user_id
             referencedColumnName: id
+            onDelete: CASCADE
+    oneToMany:
+        questions:
+          targetEntity: AppBundle\Entity\SurveyQuestion
+          mappedBy: survey

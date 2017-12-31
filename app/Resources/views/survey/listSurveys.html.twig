@@ -1,0 +1,12 @@
+{% extends 'listBase.html.twig' %}
+
+{% block page_content_title %}
+    Surveys
+{% endblock %}
+
+{% block content %}
+    {{ sg_datatables_render(datatable) }}
+    <div class="form-group">
+        <a href="{{ path('survey_add') }}"><button type="button" class="btn-primary">Add New</button> </a>
+    </div>
+{% endblock %}

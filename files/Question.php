@@ -3,9 +3,9 @@
 namespace AppBundle\Entity;
 
 /**
- * Survey
+ * Question
  */
-class Survey
+class Question
 {
     /**
      * @var integer
@@ -15,43 +15,34 @@ class Survey
     /**
      * @var string
      */
-    private $name;
+    private $content;
 
     /**
      * @var string
      */
-    private $description;
+    private $question_type = 'text';
 
     /**
      * @var \DateTime
      */
-    private $created_date = 0;
+    private $created_date;
 
     /**
      * @var \DateTime
      */
-    private $modified_date = 0;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $questions;
+    private $modified_date;
 
     /**
      * @var \AppBundle\Entity\User
      */
     private $user;
 
-    /**
-     * Constructor
-     */
+
     public function __construct()
     {
-        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_date = new \DateTime('now');
         $this->modified_date = new \DateTime('now');
     }
-
     /**
      * Get id
      *
@@ -63,51 +54,51 @@ class Survey
     }
 
     /**
-     * Set name
+     * Set content
      *
-     * @param string $name
+     * @param string $content
      *
-     * @return Survey
+     * @return Question
      */
-    public function setName($name)
+    public function setContent($content)
     {
-        $this->name = $name;
+        $this->content = $content;
 
         return $this;
     }
 
     /**
-     * Get name
+     * Get content
      *
      * @return string
      */
-    public function getName()
+    public function getContent()
     {
-        return $this->name;
+        return $this->content;
     }
 
     /**
-     * Set description
+     * Set questionType
      *
-     * @param string $description
+     * @param string $questionType
      *
-     * @return Survey
+     * @return Question
      */
-    public function setDescription($description)
+    public function setQuestionType($questionType)
     {
-        $this->description = $description;
+        $this->question_type = $questionType;
 
         return $this;
     }
 
     /**
-     * Get description
+     * Get questionType
      *
      * @return string
      */
-    public function getDescription()
+    public function getQuestionType()
     {
-        return $this->description;
+        return $this->question_type;
     }
 
     /**
@@ -115,7 +106,7 @@ class Survey
      *
      * @param \DateTime $createdDate
      *
-     * @return Survey
+     * @return Question
      */
     public function setCreatedDate($createdDate)
     {
@@ -139,7 +130,7 @@ class Survey
      *
      * @param \DateTime $modifiedDate
      *
-     * @return Survey
+     * @return Question
      */
     public function setModifiedDate($modifiedDate)
     {
@@ -159,45 +150,11 @@ class Survey
     }
 
     /**
-     * Add question
-     *
-     * @param \AppBundle\Entity\SurveyQuestion $question
-     *
-     * @return Survey
-     */
-    public function addQuestion(\AppBundle\Entity\SurveyQuestion $question)
-    {
-        $this->questions[] = $question;
-
-        return $this;
-    }
-
-    /**
-     * Remove question
-     *
-     * @param \AppBundle\Entity\SurveyQuestion $question
-     */
-    public function removeQuestion(\AppBundle\Entity\SurveyQuestion $question)
-    {
-        $this->questions->removeElement($question);
-    }
-
-    /**
-     * Get questions
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getQuestions()
-    {
-        return $this->questions;
-    }
-
-    /**
      * Set user
      *
      * @param \AppBundle\Entity\User $user
      *
-     * @return Survey
+     * @return Question
      */
     public function setUser(\AppBundle\Entity\User $user = null)
     {

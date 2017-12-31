@@ -20,12 +20,12 @@ class Answer
     /**
      * @var \DateTime
      */
-    private $created_date;
+    private $created_date = 0;
 
     /**
      * @var \DateTime
      */
-    private $modified_date;
+    private $modified_date = 0;
 
     /**
      * @var \AppBundle\Entity\SurveyQuestion
@@ -216,4 +216,3 @@ class Answer
         return $this->choices;
     }
 }
-

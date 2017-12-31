@@ -15,12 +15,7 @@ class SurveyQuestion
     /**
      * @var \DateTime
      */
-    private $created_date = 0;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $answers;
+    private $created_date;
 
     /**
      * @var \AppBundle\Entity\Question
@@ -32,12 +27,8 @@ class SurveyQuestion
      */
     private $survey;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_date = new \DateTime('now');
     }
 
@@ -73,40 +64,6 @@ class SurveyQuestion
     public function getCreatedDate()
     {
         return $this->created_date;
-    }
-
-    /**
-     * Add answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     *
-     * @return SurveyQuestion
-     */
-    public function addAnswer(\AppBundle\Entity\Answer $answer)
-    {
-        $this->answers[] = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Remove answer
-     *
-     * @param \AppBundle\Entity\Answer $answer
-     */
-    public function removeAnswer(\AppBundle\Entity\Answer $answer)
-    {
-        $this->answers->removeElement($answer);
-    }
-
-    /**
-     * Get answers
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAnswers()
-    {
-        return $this->answers;
     }
 
     /**
