@@ -216,4 +216,3 @@ class Question
         return $this->user;
     }
 }
-

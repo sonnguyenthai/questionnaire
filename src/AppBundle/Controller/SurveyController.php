@@ -6,8 +6,9 @@ use AppBundle\Entity\Survey;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Datatables\SurveyDatatable;
-use Psr\Log\LoggerInterface;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class SurveyController extends Controller
 {
@@ -51,6 +53,8 @@ class SurveyController extends Controller
     }
 
     /**
+     * Add a new Survey
+     *
      * @Route("/survey/add", name="survey_add")
      */
     public function addSurveyAction(Request $request){
@@ -103,7 +107,7 @@ class SurveyController extends Controller
                 if ($form->get('next')->isClicked()){
                     return $this->redirectToRoute('question_add', array('survey' => $survey->getId()));
                 }
-                return $this->redirectToRoute('add_survey');
+                return $this->redirectToRoute('list_surveys');
             }
 
         }
@@ -124,10 +128,33 @@ class SurveyController extends Controller
     /**
      * Remove a survey
      *
-     * @Route("/survey/{id}/delete", name="delete_survey")
+     * @Route("/survey/{id}/delete", name="survey_delete")
      */
-    public function deleteSurveyAction(){
+    public function deleteSurveyAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        $form = $this->createFormBuilder()->getForm();
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em->remove($survey);
+            $em->flush();
+
+            $this->addFlash('success', "The survey with id ".$id." is deleted successfully");
+
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        return $this->render('survey/deleteSurvey.html.twig', array(
+            'survey' => $survey,
+            'form'   => $form->createView(),
+        ));
     }
 
     /**

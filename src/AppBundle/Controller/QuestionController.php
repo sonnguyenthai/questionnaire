@@ -90,17 +90,6 @@ class QuestionController extends Controller
         $question = new Question();
         $question->setUser($user);
 
-
-//        $form = $this->createFormBuilder($question)
-//            ->add('content',   TextareaType::class)
-//            ->add('question_type',     ChoiceType::class, array(
-//                'choices' => array(
-//                    'Text' => 'text',
-//                    'Single choice' => 'single',
-//                    'Multiple choice' => 'multiple',
-//                )))
-//            ->add('save',      SubmitType::class)
-//            ->getForm();
         $form = $this->createForm(QuestionType::class, $question);
 
 
@@ -153,14 +142,14 @@ class QuestionController extends Controller
 
     }
 
-
     /**
-     * Add new question.
+     * Delete a Question.
      *
      * @Route("/question/{id}/delete", name="question_delete")
      */
     public function deleteAction($id, Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository('AppBundle:Question')->find($id);
@@ -171,23 +160,23 @@ class QuestionController extends Controller
 
         // On crée un formulaire vide, qui ne contiendra que le champ CSRF
         // Cela permet de protéger la suppression de la question contre cette faille
-        $form = $this->get('form.factory')->create();
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('question_delete', array('id'=>$id)))->getForm();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em->remove($question);
             $em->flush();
 
-            $request->getSession()->getFlashBag()->add('info', "La question a bien été supprimée.");
+            $this->addFlash('success', "La question ".$id." a bien été supprimée.");
 
-            return $this->redirectToRoute('questions_home');
+            return $this->redirectToRoute('list_questions');
         }
 
-        return $this->render('delete.html.twig', array(
+        return $this->render('question/deleteQuestion.html.twig', array(
             'question' => $question,
             'form'   => $form->createView(),
         ));
     }
-
 
     /**
      * Add new question.
@@ -198,7 +187,6 @@ class QuestionController extends Controller
     public function updateAction($id, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository('AppBundle:Question')->find($id);
@@ -238,6 +226,7 @@ class QuestionController extends Controller
 
     /**
      * Add Choice entity
+     *
      * @Route("question/{id}/add-choice", name="choice_add")
      * @Method({"POST", "GET"})
      */
@@ -267,33 +256,4 @@ class QuestionController extends Controller
         }
     }
 
-    /**
-     * Add Choice entity
-     * @Route("choice/add2", name="choice_add2")
-     * @Method({"POST"})
-     */
-    public function addChoiceAction2(Request $request){
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $id = $request->request->get('question_id');
-        $content = $request->request->get('choice_content');
-        if ($id){
-            $em = $this->getDoctrine()->getManager();
-            $question = $em->getRepository('AppBundle:Question')->find($id);
-            if ($question){
-                $choice = new Choice();
-                $choice->setQuestion($question);
-                $choice->setContent($content);
-                $em->persist($choice);
-                $em->flush();
-                $this->addFlash('success', 'Added Choice successfully for Question '.$id);
-            }else{
-                $this->addFlash('danger', 'Can not find Question object with ID ='.$id);
-            }
-        }else{
-            $this->addFlash('danger', 'Question ID is empty');
-        }
-
-        return $this->redirectToRoute('question_edit',array('id'=>$id));
-    }
 }

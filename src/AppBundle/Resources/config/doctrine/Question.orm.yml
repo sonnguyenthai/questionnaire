@@ -24,6 +24,7 @@ AppBundle\Entity\Question:
           joinColumn:
             name: user_id
             referencedColumnName: id
+            onDelete: CASCADE
     oneToMany:
         choices:
           targetEntity: AppBundle\Entity\Choice
