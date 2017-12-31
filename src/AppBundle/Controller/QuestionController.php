@@ -267,13 +267,21 @@ class QuestionController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $choice = $em->getRepository('AppBundle:Choice')->find($id);
+
         if ($choice) {
+            if ($choice->getQuestion()->getId() != $question_id){
+                $this->addFlash('danger', 'The specific choice doesnt belong to this question');
+                return $this->redirectToRoute('question_edit',array('id'=>$question_id));
+            }
+
             $form = $this->createFormBuilder()
                 ->setAction($this->generateUrl('choice_delete', array('id'=>$id, 'question_id'=>$question_id)))->getForm();
 
             if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
                 $em->remove($choice);
                 $em->flush();
+
+                $this->addFlash('success', 'Removed one choice successfully');
                 return $this->redirectToRoute('question_edit',array('id'=>$question_id));
             }
             return $this->render("question/deleteChoice.html.twig",
