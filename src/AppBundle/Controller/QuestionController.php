@@ -9,10 +9,20 @@
 namespace AppBundle\Controller;
 
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+
 use AppBundle\Entity\Question;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use AppBundle\Entity\Choice;
+use AppBundle\Entity\Survey;
+use AppBundle\Entity\SurveyQuestion;
+use AppBundle\Datatables\QuestionDatatable;
 use AppBundle\Form\QuestionType;
+
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -24,12 +34,35 @@ use Symfony\Component\HttpFoundation\Request;
 
 class QuestionController extends Controller
 {
-    public function listQuestionAction()
+    /**
+     * Lists all Question entities.
+     *
+     * @Route("/questions", name="list_questions")
+     */
+    public function listQuestionAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-        $question = $em->getRepository(Question::class)->findAll();
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
-        return $this->render('listeQuestion.html.twig',array('question'=>$question,"listquestion"=>count($question)));
+        $isAjax = $request->isXmlHttpRequest();
+        $datatable = $this->get('sg_datatables.factory')->create(QuestionDatatable::class);
+        $datatable->buildDatatable();
+
+        if ($isAjax) {
+            $responseService = $this->get('sg_datatables.response');
+            $responseService->setDatatable($datatable);
+            $datatableQueryBuilder = $responseService->getDatatableQueryBuilder();
+
+            $qb = $datatableQueryBuilder->getQb();
+            $qb->andWhere('user.username = :username');
+            $qb->setParameter('username', $user->getUsername());
+
+            return $responseService->getResponse();
+        }
+
+        return $this->render('question/listQuestions.html.twig', array(
+            'datatable' => $datatable,
+        ));
 
     }
 
@@ -44,23 +77,32 @@ class QuestionController extends Controller
 
     }
 
+    /**
+     * Add new question.
+     *
+     * @Route("/question/add", name="question_add")
+     */
     public function addAction(Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         // On crée un objet Question
         $question = new Question();
-        //$question->setDate(new \Datetime());
+        $question->setUser($user);
 
-        $form = $this->createFormBuilder($question)
-            ->add('content',   TextareaType::class)
-            ->add('question_type',     ChoiceType::class, array(
-                'choices' => array(
-                    'Text' => true,
-                    'Single choice' => false,
-                    'Multiple choice' => null,
-                )))
-            ->add('save',      SubmitType::class)
-            ->getForm();
+
+//        $form = $this->createFormBuilder($question)
+//            ->add('content',   TextareaType::class)
+//            ->add('question_type',     ChoiceType::class, array(
+//                'choices' => array(
+//                    'Text' => 'text',
+//                    'Single choice' => 'single',
+//                    'Multiple choice' => 'multiple',
+//                )))
+//            ->add('save',      SubmitType::class)
+//            ->getForm();
+        $form = $this->createForm(QuestionType::class, $question);
 
 
         // Si la requête est en POST
@@ -75,20 +117,49 @@ class QuestionController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($question);
                 $em->flush();
-                $request->getSession()->getFlashBag()->add('notice', 'Question bien enregistrée.');
+
+                $choices = $request->request->get('choice');
+                if ($choices)
+                    foreach($choices as $choice){
+                        $ch = new Choice();
+                        $ch->setContent($choice);
+                        $ch->setQuestion($question);
+                        $em->persist($ch);
+                        $em->flush();
+                    }
+
+                $survey_id = $request->query->get('survey');
+                if ($survey_id){
+                    $survey_repo = $this->getDoctrine()->getRepository(Survey::class);
+                    $survey = $survey_repo->find($survey_id);
+                    if ($survey){
+                        $survey_question = new SurveyQuestion();
+                        $survey_question->setQuestion($question);
+                        $survey_question->setSurvey($survey);
+                        $em->persist($survey_question);
+                        $em->flush();
+                    }
+                }
+
+                $this->addFlash('success', 'Created successfully Question object with ID = '.$question->getId());
 
                 // On redirige vers la page de visualisation de la question  nouvellement créée
-                return $this->redirectToRoute('question_view:', array('id' => $question->getId()));
+                return $this->redirectToRoute('list_questions');
             }
         }
 
-        return $this->render('form.html.twig', array(
+        return $this->render('question/addQuestion.html.twig', array(
             'form' => $form->createView(),
         ));
 
     }
 
 
+    /**
+     * Add new question.
+     *
+     * @Route("/question/{id}/delete", name="question_delete")
+     */
     public function deleteAction($id, Request $request)
     {
 
@@ -119,31 +190,111 @@ class QuestionController extends Controller
     }
 
 
+    /**
+     * Add new question.
+     *
+     * @Route("/question/{id}/edit", name="question_edit", requirements={"id" = "\d+"})
+     * @Method({"POST", "GET"})
+     */
     public function updateAction($id, Request $request)
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
         $em = $this->getDoctrine()->getManager();
-        $question = $em->getRepository(Question::class)->findById($id);
-        $form = $this->createForm(QuestionType::class,$question);
+        $question = $em->getRepository('AppBundle:Question')->find($id);
+        if (!$question) {
+            throw $this->createNotFoundException(
+                'No product found for id '.$id
+            );
+        }
 
+        $form = $this->createForm(QuestionType::class, $question);
+        $choices = $question->getChoices();
 
-        return $this->handleForm($form,$question,$request);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $question = $form->getData();
 
+            if ($form->get('question_type')->getData() == "text"){
+                foreach ($choices as $choice){
+                    $question->removeChoice($choice);
+                }
+            }
+            $question->setModifiedDate(new \DateTime('now'));
 
+            $em=$this->getDoctrine()->getManager();
+            $em->persist($question);
+            $em->flush();
+
+            $this->addFlash('success', 'Your changes on Question object '.$id.' are saved!');
+            return $this->redirectToRoute('list_questions');
+        }
+        return $this->render('question/editQuestion.html.twig',
+            array('form'=>$form->createView(),
+                'choices'=>$choices,
+                'question'=>$question
+                ));
     }
 
+    /**
+     * Add Choice entity
+     * @Route("question/{id}/add-choice", name="choice_add")
+     * @Method({"POST", "GET"})
+     */
+    public function addChoiceAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-    public function handleForm($form,  Question $question, Request $request)
-    {
-        $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid()){
-                $question=$form->getData();
-                $em=$this->getDoctrine()->getManager();
-                $em->persist($question);
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('AppBundle:Question')->find($id);
+        if ($question) {
+            $choice = new Choice();
+            $choice->setQuestion($question);
+            $form = $this->createFormBuilder($choice)
+                ->setAction($this->generateUrl('choice_add', array('id'=>$id)))
+                ->add('content', TextType::class)->getForm();
+
+            if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+                $em->persist($choice);
                 $em->flush();
-
-                return $this->redirectToRoute('listquestion',array('message'=>'succès'));
+                return $this->redirectToRoute('question_edit',array('id'=>$id));
             }
-        return $this->render('form.html.twig',array('form'=>$form->createView()));
+            return $this->render("question/addChoiceModal.html.twig",
+                array('form'=>$form->createView(),
+                    ));
+        }else{
+            $this->addFlash('danger', 'Can not find Question object with ID ='.$id);
+            return $this->redirectToRoute("list_questions");
+        }
+    }
 
+    /**
+     * Add Choice entity
+     * @Route("choice/add2", name="choice_add2")
+     * @Method({"POST"})
+     */
+    public function addChoiceAction2(Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $id = $request->request->get('question_id');
+        $content = $request->request->get('choice_content');
+        if ($id){
+            $em = $this->getDoctrine()->getManager();
+            $question = $em->getRepository('AppBundle:Question')->find($id);
+            if ($question){
+                $choice = new Choice();
+                $choice->setQuestion($question);
+                $choice->setContent($content);
+                $em->persist($choice);
+                $em->flush();
+                $this->addFlash('success', 'Added Choice successfully for Question '.$id);
+            }else{
+                $this->addFlash('danger', 'Can not find Question object with ID ='.$id);
+            }
+        }else{
+            $this->addFlash('danger', 'Question ID is empty');
+        }
+
+        return $this->redirectToRoute('question_edit',array('id'=>$id));
     }
 }

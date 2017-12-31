@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <div class="cancel pull-right" ng-click="cancel()">
+        <span class="close">X</span>
+    </div>
+    <h3>Add Choice</h3>
+    <h3 class="text-success" ng-show="succ">{{success}}</h3>
+    <h3 class="text-danger" ng-show="error!=''">{{error}}</h3>
+</div>
+<div class="modal-body" ng-hide="succ">
+    <form name="f" class="form-horizontal" role="form">
+        <div class="form-group">
+            <div class="col-xs-12">
+                <input type="hidden" ng-model="data.question_id">
+                <input type="text" id="choice" name="choice" placeHolder="choice" class="form-control" ng-model="data.choice_content" ng-disabled="sync" required/>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <input type="submit" class="btn btn-default btn-primary" ui-keypress="{13:'ok(f)'}" ng-click="ok(f)"  ng-disabled="sync" value="Add"/>
+</div>

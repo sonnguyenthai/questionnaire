@@ -21,11 +21,17 @@ class QuestionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('content',   TextType::class)
-            ->add('question_type',     ChoiceType::class)
-            ->add('modified_date', DateType::class)
+            ->add('content',   TextareaType::class)
+            ->add('question_type',     ChoiceType::class, array(
+                'choices' => array(
+                    'Text' => 'text',
+                    'Single choice' => 'single',
+                    'Multiple choice' => 'multiple',
+                )))
             ->add('save',      SubmitType::class);
-    }/**
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

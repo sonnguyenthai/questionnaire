@@ -33,25 +33,16 @@ class Question
     private $modified_date;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $choices;
-
-    /**
      * @var \AppBundle\Entity\User
      */
     private $user;
 
-    /**
-     * Constructor
-     */
+
     public function __construct()
     {
-        $this->choices = new \Doctrine\Common\Collections\ArrayCollection();
         $this->created_date = new \DateTime('now');
         $this->modified_date = new \DateTime('now');
     }
-
     /**
      * Get id
      *
@@ -159,40 +150,6 @@ class Question
     }
 
     /**
-     * Add choice
-     *
-     * @param \AppBundle\Entity\Choice $choice
-     *
-     * @return Question
-     */
-    public function addChoice(\AppBundle\Entity\Choice $choice)
-    {
-        $this->choices[] = $choice;
-
-        return $this;
-    }
-
-    /**
-     * Remove choice
-     *
-     * @param \AppBundle\Entity\Choice $choice
-     */
-    public function removeChoice(\AppBundle\Entity\Choice $choice)
-    {
-        $this->choices->removeElement($choice);
-    }
-
-    /**
-     * Get choices
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getChoices()
-    {
-        return $this->choices;
-    }
-
-    /**
      * Set user
      *
      * @param \AppBundle\Entity\User $user
@@ -216,4 +173,3 @@ class Question
         return $this->user;
     }
 }
-

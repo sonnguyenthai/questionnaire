@@ -8,37 +8,10 @@ logout:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
+sg_datatables_bundle:
+    resource: "@SgDatatablesBundle/Controller/"
+    type:     annotation
+    prefix:   /sg
 
-questions_home:
-    path:      /question/listQuestion
-    defaults:
-        _controller: AppBundle:Question:listQuestion
-        page:        1
-    requirements:
-        page: \d*
-
-question_view:
-    path:      /question/view/{id}
-    defaults:
-        _controller: AppBundle:Question:view
-    requirements:
-        id: \d+
-
-question_add:
-    path:      /question/add
-    defaults:
-        _controller: AppBundle:Question:add
-
-question_update:
-    path:      /question/update/{id}
-    defaults:
-        _controller: AppBundle:Question:update
-    requirements:
-        id: \d+
-
-question_delete:
-    path:      /question/delete/{id}
-    defaults:
-        _controller: AppBundle:Question:delete
-    requirements:
-        id: \d+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

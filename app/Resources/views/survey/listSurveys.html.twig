@@ -1,0 +1,9 @@
+{% extends 'listBase.html.twig' %}
+
+{% block page_content_title %}
+    Surveys
+{% endblock %}
+
+{% block content %}
+    {{ sg_datatables_render(datatable) }}
+{% endblock %}

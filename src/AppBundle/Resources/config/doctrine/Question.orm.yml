@@ -16,15 +16,15 @@ AppBundle\Entity\Question:
               default: "text"
         created_date:
             type: datetime
-            options:
-              default: 0
         modified_date:
             type: datetime
-            options:
-              default: 0
     manyToOne:
         user:
           targetEntity: AppBundle\Entity\User
           joinColumn:
             name: user_id
             referencedColumnName: id
+    oneToMany:
+        choices:
+          targetEntity: AppBundle\Entity\Choice
+          mappedBy: question

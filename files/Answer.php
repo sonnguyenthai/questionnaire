@@ -3,9 +3,9 @@
 namespace AppBundle\Entity;
 
 /**
- * Question
+ * Answer
  */
-class Question
+class Answer
 {
     /**
      * @var integer
@@ -18,11 +18,6 @@ class Question
     private $content;
 
     /**
-     * @var string
-     */
-    private $question_type = 'text';
-
-    /**
      * @var \DateTime
      */
     private $created_date;
@@ -33,14 +28,19 @@ class Question
     private $modified_date;
 
     /**
+     * @var \AppBundle\Entity\SurveyQuestion
+     */
+    private $survey_question;
+
+    /**
+     * @var \AppBundle\Entity\Respondent
+     */
+    private $respondent;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $choices;
-
-    /**
-     * @var \AppBundle\Entity\User
-     */
-    private $user;
 
     /**
      * Constructor
@@ -67,7 +67,7 @@ class Question
      *
      * @param string $content
      *
-     * @return Question
+     * @return Answer
      */
     public function setContent($content)
     {
@@ -87,35 +87,11 @@ class Question
     }
 
     /**
-     * Set questionType
-     *
-     * @param string $questionType
-     *
-     * @return Question
-     */
-    public function setQuestionType($questionType)
-    {
-        $this->question_type = $questionType;
-
-        return $this;
-    }
-
-    /**
-     * Get questionType
-     *
-     * @return string
-     */
-    public function getQuestionType()
-    {
-        return $this->question_type;
-    }
-
-    /**
      * Set createdDate
      *
      * @param \DateTime $createdDate
      *
-     * @return Question
+     * @return Answer
      */
     public function setCreatedDate($createdDate)
     {
@@ -139,7 +115,7 @@ class Question
      *
      * @param \DateTime $modifiedDate
      *
-     * @return Question
+     * @return Answer
      */
     public function setModifiedDate($modifiedDate)
     {
@@ -159,11 +135,59 @@ class Question
     }
 
     /**
+     * Set surveyQuestion
+     *
+     * @param \AppBundle\Entity\SurveyQuestion $surveyQuestion
+     *
+     * @return Answer
+     */
+    public function setSurveyQuestion(\AppBundle\Entity\SurveyQuestion $surveyQuestion = null)
+    {
+        $this->survey_question = $surveyQuestion;
+
+        return $this;
+    }
+
+    /**
+     * Get surveyQuestion
+     *
+     * @return \AppBundle\Entity\SurveyQuestion
+     */
+    public function getSurveyQuestion()
+    {
+        return $this->survey_question;
+    }
+
+    /**
+     * Set respondent
+     *
+     * @param \AppBundle\Entity\Respondent $respondent
+     *
+     * @return Answer
+     */
+    public function setRespondent(\AppBundle\Entity\Respondent $respondent = null)
+    {
+        $this->respondent = $respondent;
+
+        return $this;
+    }
+
+    /**
+     * Get respondent
+     *
+     * @return \AppBundle\Entity\Respondent
+     */
+    public function getRespondent()
+    {
+        return $this->respondent;
+    }
+
+    /**
      * Add choice
      *
      * @param \AppBundle\Entity\Choice $choice
      *
-     * @return Question
+     * @return Answer
      */
     public function addChoice(\AppBundle\Entity\Choice $choice)
     {
@@ -190,30 +214,6 @@ class Question
     public function getChoices()
     {
         return $this->choices;
-    }
-
-    /**
-     * Set user
-     *
-     * @param \AppBundle\Entity\User $user
-     *
-     * @return Question
-     */
-    public function setUser(\AppBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }
 
