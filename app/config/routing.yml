@@ -4,6 +4,7 @@ app:
 
 logout:
     path: /logout
+
 home:
     path: /
 
