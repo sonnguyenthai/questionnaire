@@ -121,11 +121,13 @@ class QuestionController extends Controller
                     $survey_repo = $this->getDoctrine()->getRepository(Survey::class);
                     $survey = $survey_repo->find($survey_id);
                     if ($survey){
-                        $survey_question = new SurveyQuestion();
-                        $survey_question->setQuestion($question);
-                        $survey_question->setSurvey($survey);
-                        $em->persist($survey_question);
-                        $em->flush();
+                        if ($survey->getUser() == $user){
+                            $survey_question = new SurveyQuestion();
+                            $survey_question->setQuestion($question);
+                            $survey_question->setSurvey($survey);
+                            $em->persist($survey_question);
+                            $em->flush();
+                        }
                     }
                 }
 
@@ -150,12 +152,18 @@ class QuestionController extends Controller
     public function deleteAction($id, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository('AppBundle:Question')->find($id);
 
         if (null === $question) {
             throw new NotFoundHttpException("La question d'id ".$id." n'existe pas.");
+        }
+
+        if ($question->getUser() != $user){
+            $this->addFlash('danger', 'The question with ID '.$id.' does not belong to you');
+            return $this->redirectToRoute('list_questions');
         }
 
         // On crée un formulaire vide, qui ne contiendra que le champ CSRF
@@ -187,6 +195,7 @@ class QuestionController extends Controller
     public function updateAction($id, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository('AppBundle:Question')->find($id);
@@ -194,6 +203,11 @@ class QuestionController extends Controller
             throw $this->createNotFoundException(
                 'No product found for id '.$id
             );
+        }
+
+        if ($question->getUser() != $user){
+            $this->addFlash('danger', 'The question with ID '.$id.' does not belong to you');
+            return $this->redirectToRoute('list_questions');
         }
 
         $form = $this->createForm(QuestionType::class, $question);

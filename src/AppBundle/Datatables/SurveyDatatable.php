@@ -73,7 +73,7 @@ class SurveyDatatable extends AbstractDatatable
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => array(
                     array(
-                        'route' => 'survey_show',
+                        'route' => 'survey_view_public',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),

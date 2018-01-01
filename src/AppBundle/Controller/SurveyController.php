@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Answer;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\Question;
+use AppBundle\Entity\Choice;
 use AppBundle\Entity\SurveyQuestion;
+use AppBundle\Entity\Respondent;
 use AppBundle\Datatables\SurveyDatatable;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
@@ -78,7 +81,7 @@ class SurveyController extends Controller
                     return $question->getContent();
                 }
                 ])
-            ->add('save', SubmitType::class, array('label' => 'Create Task'))
+            ->add('save', SubmitType::class, array('label' => 'Finish'))
             ->add('next', SubmitType::class, array('label' => 'Save And Add New Question'))
             ->getForm();
 
@@ -132,12 +135,18 @@ class SurveyController extends Controller
      */
     public function deleteSurveyAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $survey = $em->getRepository('AppBundle:Survey')->find($id);
 
         if (null === $survey) {
             throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
         }
 
         $form = $this->createFormBuilder()->getForm();
@@ -160,9 +169,72 @@ class SurveyController extends Controller
     /**
      * Show a survey
      *
-     * @Route("/survey/{id}/delete", name="survey_show")
+     * @Route("/survey/{id}/show", name="survey_show")
      */
     public function showSurveyAction(){
+
+    }
+
+    /**
+     * Public view of a survey
+     *
+     * @Route("/survey/{id}/view", name="survey_view_public")
+     */
+    public function publicViewSurveyAction($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+        $respondent = new Respondent();
+
+        $respondent->setSurvey($survey);
+
+
+        $form = $this->createFormBuilder()->getForm();
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $respondent->setName($request->request->get('respondent_name', ""));
+            $em->persist($respondent);
+            $em->flush();
+
+            $sQuestions = $survey->getQuestions();
+            foreach ($sQuestions as $sQuestion){
+                $answer = new Answer();
+                $answer->setRespondent($respondent);
+                $answer->setSurveyQuestion($sQuestion);
+                $answer_name = "answer_".$sQuestion->getId();
+                $question = $sQuestion->getQuestion();
+                if ($question->getQuestionType() == "text"){
+                    $answer->setContent($request->request->get($answer_name, ""));
+                }elseif ($question->getQuestionType() == "single"){
+                    $choice_id = $request->request->get($answer_name);
+                    $choice = $em->getRepository("AppBundle:Choice")->find($choice_id);
+                    if ($choice){
+                        $answer->setContent("");
+                        $answer->addChoice($choice);
+                    }
+                }else{
+                    $choices = $request->request->get($answer_name);
+                    $answer->setContent("");
+                    foreach ($choices as $choiceId){
+                        $choice = $em->getRepository("AppBundle:Choice")->find($choiceId);
+                        if ($choice){
+                            $answer->addChoice($choice);
+                        }
+                    }
+                }
+                $em->persist($answer);
+                $em->flush();
+            }
+
+            $this->addFlash('success', "Survey completed!");
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        return $this->render('survey/publicView.html.twig', array('survey'=>$survey, 'form'=>$form->createView()));
 
     }
 }
