@@ -50,15 +50,21 @@ class QuestionDatatable extends AbstractDatatable
         $this->features->set(array(
         ));
 
+        $this->extensions->set(array(
+            'responsive' => true
+        ));
+
         $this->columnBuilder
             ->add('id', Column::class, array(
                 'title' => 'Id',
+                'width' => '40px'
                 ))
             ->add('content', Column::class, array(
                 'title' => 'Content',
                 ))
             ->add('question_type', Column::class, array(
                 'title' => 'Question_type',
+                'width' => '100px'
                 ))
             ->add('created_date', DateTimeColumn::class, array(
                 'title' => 'Created_date',
@@ -68,6 +74,7 @@ class QuestionDatatable extends AbstractDatatable
                 ))
             ->add('user.username', Column::class, array(
                 'title' => 'User',
+                'width' => '100px'
                 ))
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),

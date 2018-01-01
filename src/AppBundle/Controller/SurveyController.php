@@ -167,12 +167,61 @@ class SurveyController extends Controller
     }
 
     /**
-     * Show a survey
+     * Show a survey results (all results)
      *
-     * @Route("/survey/{id}/show", name="survey_show")
+     * @Route("/survey/{id}/result", name="survey_show")
      */
-    public function showSurveyAction(){
+    public function showSurveyResultAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        return $this->render('survey/surveyView.html.twig', array('survey'=>$survey));
+    }
+
+    /**
+     * Show a survey results (all results)
+     *
+     * @Route("/survey/{id}/result/{respondent_id}", name="survey_single_result")
+     */
+    public function showSingleSurveyResultAction($id, $respondent_id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        $respondent = $em->getRepository('AppBundle:Respondent')->find($respondent_id);
+        if (null === $respondent) {
+            throw new NotFoundHttpException("The respondent with id ".$respondent_id." doesn't exist");
+        }
+
+        if ($respondent->getSurvey() != $survey){
+            $this->addFlash( "danger","The specific respondent ".$respondent_id." doesnt belong to the survey ".$id);
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        return $this->render('survey/singleSurveyResultView.html.twig', array('survey'=>$survey, 'respondent'=>$respondent));
     }
 
     /**
@@ -212,8 +261,11 @@ class SurveyController extends Controller
                     $choice_id = $request->request->get($answer_name);
                     $choice = $em->getRepository("AppBundle:Choice")->find($choice_id);
                     if ($choice){
-                        $answer->setContent("");
-                        $answer->addChoice($choice);
+                        // Check if the choice belongs to the current question
+                        if ($choice->getQuestion() == $question){
+                            $answer->setContent("");
+                            $answer->addChoice($choice);
+                        }
                     }
                 }else{
                     $choices = $request->request->get($answer_name);
@@ -221,7 +273,10 @@ class SurveyController extends Controller
                     foreach ($choices as $choiceId){
                         $choice = $em->getRepository("AppBundle:Choice")->find($choiceId);
                         if ($choice){
-                            $answer->addChoice($choice);
+                            // Check if the choice belongs to the current question
+                            if ($choice->getQuestion() == $question) {
+                                $answer->addChoice($choice);
+                            }
                         }
                     }
                 }
