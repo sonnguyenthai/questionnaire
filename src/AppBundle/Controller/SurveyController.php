@@ -131,7 +131,7 @@ class SurveyController extends Controller
     /**
      * Remove a survey
      *
-     * @Route("/survey/{id}/delete", name="survey_delete")
+     * @Route("/survey/{id}/delete", name="survey_delete", requirements={"id" = "\d+"})
      */
     public function deleteSurveyAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -167,9 +167,67 @@ class SurveyController extends Controller
     }
 
     /**
+     * Export all results of a survey to a csv file
+     *
+     * @Route("/survey/{id}/result/export", name="survey_export", requirements={"id" = "\d+"})
+     */
+    public function exportSurveyResultAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        $results = array();
+        $headers = array();
+        $respondents = $survey->getRespondents();
+        foreach ($respondents as $res){
+            $result = array($res->getName(), $res->getTimestamp()->format('Y-m-d H:i'));
+            $headers = array("respondent", "timestamp");
+            foreach ($res->getAnswers() as $answer){
+                $question = $answer->getSurveyQuestion()->getQuestion()->getContent();
+                $headers[] = $question;
+                if ($answer->getSurveyQuestion()->getQuestion()->getQuestionType() == "text"){
+                    $result[] = $answer->getContent();
+                }else{
+                    $selected_choice = array();
+                    foreach ($answer->getChoices() as $choice){
+                        $selected_choice[] = $choice->getContent();
+                    }
+                    $result[] = join("|", $selected_choice);
+                }
+            }
+            $results[] = $result;
+        }
+
+
+        $res = $this->render('survey/surveyResult.csv.twig',
+            array(
+                'survey'=>$survey,
+                'headers'=>$headers,
+                'results'=>$results
+            )
+        );
+        $fic = 'survey_'.$id. \date("Y-m-d") . '.csv';
+        $res->headers->set('Content-Disposition','attachment; filename="'.$fic.'"');
+        $res->headers->set('Content-Type', 'text/csv');
+        return $res;
+
+    }
+
+    /**
      * Show a survey results (all results)
      *
-     * @Route("/survey/{id}/result", name="survey_show")
+     * @Route("/survey/{id}/result", name="survey_show", requirements={"id" = "\d+"})
      */
     public function showSurveyResultAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -193,7 +251,7 @@ class SurveyController extends Controller
     /**
      * Show a survey results (all results)
      *
-     * @Route("/survey/{id}/result/{respondent_id}", name="survey_single_result")
+     * @Route("/survey/{id}/result/{respondent_id}", name="survey_single_result", requirements={"id" = "\d+", "respondent_id" = "\d+"})
      */
     public function showSingleSurveyResultAction($id, $respondent_id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -227,7 +285,7 @@ class SurveyController extends Controller
     /**
      * Public view of a survey
      *
-     * @Route("/survey/{id}/view", name="survey_view_public")
+     * @Route("/survey/{id}/view", name="survey_view_public", requirements={"id" = "\d+"})
      */
     public function publicViewSurveyAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();

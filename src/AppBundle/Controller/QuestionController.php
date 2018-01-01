@@ -147,7 +147,7 @@ class QuestionController extends Controller
     /**
      * Delete a Question.
      *
-     * @Route("/question/{id}/delete", name="question_delete")
+     * @Route("/question/{id}/delete", name="question_delete", requirements={"id" = "\d+"})
      */
     public function deleteAction($id, Request $request)
     {
@@ -241,7 +241,7 @@ class QuestionController extends Controller
     /**
      * Add Choice entity
      *
-     * @Route("question/{id}/add-choice", name="choice_add")
+     * @Route("question/{id}/add-choice", name="choice_add", requirements={"id" = "\d+"})
      * @Method({"POST", "GET"})
      */
     public function addChoiceAction($id, Request $request){
@@ -273,7 +273,7 @@ class QuestionController extends Controller
     /**
      * Remove a Choice entity
      *
-     * @Route("question/{question_id}/choice/{id}/delete", name="choice_delete")
+     * @Route("question/{question_id}/choice/{id}/delete", name="choice_delete", requirements={"id" = "\d+", "question_id" = "\d+"})
      * @Method({"POST", "GET"})
      */
     public function removeChoiceAction($question_id, $id, Request $request){
