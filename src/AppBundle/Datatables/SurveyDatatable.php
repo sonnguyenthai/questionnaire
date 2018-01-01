@@ -28,7 +28,7 @@ use Sg\DatatablesBundle\Datatable\Editable\TextEditable;
 class SurveyDatatable extends AbstractDatatable
 {
     /**
-     * {@inheritdoc}
+     * @param array $options
      */
     public function buildDatatable(array $options = array())
     {
@@ -120,7 +120,7 @@ class SurveyDatatable extends AbstractDatatable
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getEntity()
     {
@@ -128,7 +128,7 @@ class SurveyDatatable extends AbstractDatatable
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

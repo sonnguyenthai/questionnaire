@@ -16,7 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 class QuestionType extends AbstractType
 {
     /**
-     * {@inheritdoc}
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -32,7 +33,7 @@ class QuestionType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @param OptionsResolver $resolver
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -42,7 +43,7 @@ class QuestionType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
+     * @return null|string
      */
     public function getBlockPrefix()
     {
