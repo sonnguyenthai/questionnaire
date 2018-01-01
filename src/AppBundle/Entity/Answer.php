@@ -3,8 +3,7 @@
 namespace AppBundle\Entity;
 
 /**
- * Class Answer
- * @package AppBundle\Entity
+ * Answer
  */
 class Answer
 {
