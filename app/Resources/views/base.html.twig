@@ -64,10 +64,15 @@
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-user fa-fw"></i>{{ app.user.username }} <i class="fa fa-caret-down"></i>
+                                            <i class="fa fa-user fa-fw"></i>{{ app.user.username|escape }} <i class="fa fa-caret-down"></i>
                                         </a>
                                         <ul class="dropdown-menu dropdown-user">
-                                            <li><a href="{{ path('user_profile_show') }}"><i class="fa fa-user fa-fw"></i> Mon compte</a></li>
+                                            <li><a href="{{ path('user_profile_show') }}"><i class="fa fa-user fa-fw"></i> Mon compte</a>
+                                            </li>
+                                            <li><a href="{{ path('list_questions') }}"><i class="fa fa-user fa-fw"></i> Questions</a>
+                                            </li>
+                                            <li><a href="{{ path('list_surveys') }}"><i class="fa fa-user fa-fw"></i> Surveys</a>
+                                            </li>
                                             <li class="divider"></li>
                                             <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
                                             </li>
@@ -75,7 +80,7 @@
                                     </li>
                                 {% else %}
                                     <li>
-                                        <a href="{{  path('register') }}"><i class="fa fa-pencil-square-o"></i> S'inscrire</a>
+                                        <a href="{{  path('register') }}">S'inscrire</a>
                                     </li>
                                     <li>
                                         <a href="{{ path('login') }}"><i class="fa fa-sign-in fa-fw"></i> Connexion</a>

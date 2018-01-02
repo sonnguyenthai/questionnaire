@@ -97,8 +97,8 @@ class SurveyController extends Controller
                 // $form->getData() holds the submitted values
                 // but, the original `$task` variable has also been updated
                 $questions = $form->get('questions')->getData();
-                $survey->setDescription($form->get('description')->getData());
-                $survey->setName($form->get('name')->getData());
+                $survey->setDescription(strip_tags($form->get('description')->getData()));
+                $survey->setName(strip_tags($form->get('name')->getData()));
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($survey);
                 $em->flush();
