@@ -10,8 +10,7 @@ namespace AppBundle\Controller;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
 
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Choice;
@@ -135,6 +134,8 @@ class QuestionController extends Controller
                             $survey_question->setSurvey($survey);
                             $em->persist($survey_question);
                             $em->flush();
+                            $this->addFlash("success", "Added question to the survey successfully");
+                            return $this->redirectToRoute('survey_edit', array('id'=>$survey_id));
                         }
                     }
                 }

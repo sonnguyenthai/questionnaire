@@ -3,7 +3,8 @@
 namespace AppBundle\Entity;
 
 /**
- * Survey
+ * Class Survey
+ * @package AppBundle\Entity
  */
 class Survey
 {

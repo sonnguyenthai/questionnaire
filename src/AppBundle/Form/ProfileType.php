@@ -15,8 +15,16 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\AbstractType;
 
 
+/**
+ * Class ProfileType
+ * @package AppBundle\Form
+ */
 class ProfileType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $constraintsOptions = array(
@@ -43,6 +51,9 @@ class ProfileType extends AbstractType
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getParent()
     {
         return 'FOS\UserBundle\Form\Type\ProfileFormType';
