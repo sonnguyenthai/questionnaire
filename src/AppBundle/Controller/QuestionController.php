@@ -247,7 +247,7 @@ class QuestionController extends Controller
             $choice->setQuestion($question);
             $form = $this->createFormBuilder($choice)
                 ->setAction($this->generateUrl('choice_add', array('id'=>$id)))
-                ->add('content', TextType::class)->getForm();
+                ->add('content', TextType::class, array('required'=>1))->getForm();
 
             if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
                 $em->persist($choice);
