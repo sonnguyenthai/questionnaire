@@ -27,10 +27,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 class QuestionController extends Controller
 {
+
     /**
      * Lists all Question entities.
      *
      * @Route("/questions", name="list_questions")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listQuestionAction(Request $request)
     {
@@ -58,6 +62,10 @@ class QuestionController extends Controller
         ));
     }
 
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function viewAction($id)
     {
         $repository = $this->getDoctrine()->getManager()->getRepository(Question::class);
@@ -69,10 +77,14 @@ class QuestionController extends Controller
 
     }
 
+
     /**
      * Add new question.
      *
      * @Route("/question/add", name="question_add")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(Request $request)
     {
@@ -137,10 +149,15 @@ class QuestionController extends Controller
 
     }
 
+
     /**
      * Delete a Question.
      *
      * @Route("/question/{id}/delete", name="question_delete", requirements={"id" = "\d+"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
@@ -179,11 +196,16 @@ class QuestionController extends Controller
         ));
     }
 
+
     /**
      * Update question with id number {id}.
      *
      * @Route("/question/{id}/edit", name="question_edit", requirements={"id" = "\d+"})
      * @Method({"POST", "GET"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function updateAction($id, Request $request)
     {
@@ -231,11 +253,16 @@ class QuestionController extends Controller
                 ));
     }
 
+
     /**
      * Add Choice entity
      *
      * @Route("question/{id}/add-choice", name="choice_add", requirements={"id" = "\d+"})
      * @Method({"POST", "GET"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addChoiceAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -263,11 +290,17 @@ class QuestionController extends Controller
         }
     }
 
+
     /**
      * Remove a Choice entity
      *
      * @Route("question/{question_id}/choice/{id}/delete", name="choice_delete", requirements={"id" = "\d+", "question_id" = "\d+"})
      * @Method({"POST", "GET"})
+     *
+     * @param $question_id
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function removeChoiceAction($question_id, $id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
