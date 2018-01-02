@@ -4,15 +4,23 @@ app:
 
 logout:
     path: /logout
+
 register:
     path: /register
+    defaults: { _controller: AppBundle:Registration:register}
+
+confirm:
+    path: /confirmed
+    defaults: { _controller: AppBundle:Registration:confirmed}
 
 user_profile_show:
     path: /userprofile
     defaults: { _controller: AppBundle:Profile:show }
+
 user_profile_edit:
     path: /userprofile/edit
     defaults: { _controller: AppBundle:Profile:edit }
+
 user_profile_password:
     path: /userprofile/updatepsw
     defaults: { _controller: AppBundle:ChangePassword:changePassword }
