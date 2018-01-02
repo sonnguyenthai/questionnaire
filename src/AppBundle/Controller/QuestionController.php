@@ -106,7 +106,10 @@ class QuestionController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             // (Nous verrons la validation des objets en détail dans le prochain chapitre)
             if ($form->isValid()) {
-                // On enregistre notre objet $question dans la base de données, par exemple
+
+                // DatatablesBundle has an error in escaping out put. So we need to filter input. Did report this error and ask them to fix
+                $question->setContent(strip_tags($form->get('content')->getData()));
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($question);
                 $em->flush();
@@ -231,6 +234,8 @@ class QuestionController extends Controller
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $question = $form->getData();
+            // DatatablesBundle has an error in escaping out put. So we need to filter input. Did report this error and ask them to fix
+            $question->setContent(strip_tags($form->get('content')->getData()));
 
             if ($form->get('question_type')->getData() == "text"){
                 foreach ($choices as $choice){
