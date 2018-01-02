@@ -11,11 +11,15 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils ;
  */
 class SecurityController extends Controller
 {
+
     /**
      * @Route("/login", name="login")
+     *
+     * @param Request $request
+     * @param AuthenticationUtils $authUtils
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-
-    public function login ( Request $request , AuthenticationUtils $authUtils )
+    public function login (Request $request , AuthenticationUtils $authUtils )
     {
         // get the login error if there is one
         $error = $authUtils -> getLastAuthenticationError ();
