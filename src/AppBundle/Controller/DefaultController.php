@@ -24,14 +24,4 @@ class DefaultController extends Controller
         ]);
     }
 
-
-    /**
-     * @Route("/admin")
-     *
-     * @return Response
-     */
-    public function admin()
-    {
-        return new Response('<html><body>Admin page!</body></html>');
-    }
 }
