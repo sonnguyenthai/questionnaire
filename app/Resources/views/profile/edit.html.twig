@@ -15,19 +15,19 @@
         <div class="jumbotron">
             {{ form_start ( form ) }}
             <p>
-                Pseudo: {{ form_widget(form.username)  }}
+                Pseudo {{ form_widget(form.username, {'attr': {'class': 'form-control'}})  }}
             </p>
             <p>
-                Email: {{ form_widget(form.email)  }}
+                Email {{ form_widget(form.email, {'attr': {'class': 'form-control'}})  }}
             </p>
             <p>
-                Nom: {{ form_widget(form.lastname)  }}
+                Nom {{ form_widget(form.lastname, {'attr': {'class': 'form-control'}})  }}
             </p>
             <p>
-                Prénom: {{ form_widget(form.firstname)  }}
+                Prénom {{ form_widget(form.firstname, {'attr': {'class': 'form-control'}})  }}
             </p>
             <p>
-                Mot de passe (actuel): {{ form_widget(form.current_password)  }}
+                Mot de passe (actuel) {{ form_widget(form.current_password , {'attr': {'class': 'form-control'}})  }}
             </p>
             <button type="submit" class="btn btn-lg btn-primary">
                 Enregistrer
