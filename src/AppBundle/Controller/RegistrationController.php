@@ -193,8 +193,11 @@ class RegistrationController extends BaseController
         return $response;
     }
 
+
     /**
      * Tell the user his account is now confirmed.
+     *
+     * @return Response
      */
     public function confirmedAction()
     {

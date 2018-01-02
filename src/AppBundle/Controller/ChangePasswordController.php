@@ -25,6 +25,12 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ChangePasswordController extends BaseController
 {
+    /**
+     * To change the user password.
+     *
+     * @param Request $request
+     * @return null|RedirectResponse|Response
+     */
     public function changePasswordAction(Request $request)
     {
         $user = $this->getUser();
