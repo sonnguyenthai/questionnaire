@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Answer;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\Question;
-use AppBundle\Entity\Choice;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\Respondent;
 use AppBundle\Datatables\SurveyDatatable;
@@ -14,7 +13,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT E
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

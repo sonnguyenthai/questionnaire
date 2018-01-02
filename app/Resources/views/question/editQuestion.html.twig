@@ -44,9 +44,9 @@
             {% for choice in choices %}
                 <div class="form-group">
                     <input type="text" class="form-control" value="{{ choice.content }}"  disabled>
-                    <button type="button"  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete_modal">Remove Choice</button>
+                    <button type="button"  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete_modal_{{ choice.id }}">Remove Choice</button>
                 </div>
-                <div id="delete_modal" class="modal fade" role="dialog">
+                <div id="delete_modal_{{ choice.id }}" class="modal fade" role="dialog">
                     {{ render(controller(
                     'AppBundle:Question:removeChoice',
                     { 'question_id': question.id, 'id': choice.id }
