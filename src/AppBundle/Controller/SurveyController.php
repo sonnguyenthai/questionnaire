@@ -22,10 +22,14 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class SurveyController extends Controller
 {
 
+
     /**
      * Lists all Survey entities.
      *
      * @Route("/surveys", name="list_surveys")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listSurveysAction(Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -53,10 +57,14 @@ class SurveyController extends Controller
 
     }
 
+
     /**
      * Add a new Survey
      *
      * @Route("/survey/add", name="survey_add")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addSurveyAction(Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -126,10 +134,15 @@ class SurveyController extends Controller
 
     }
 
+
     /**
-     * Remove a survey
+     * Delete a survey
      *
      * @Route("/survey/{id}/delete", name="survey_delete", requirements={"id" = "\d+"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteSurveyAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -164,10 +177,15 @@ class SurveyController extends Controller
         ));
     }
 
+
     /**
      * Export all results of a survey to a csv file
      *
      * @Route("/survey/{id}/result/export", name="survey_export", requirements={"id" = "\d+"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function exportSurveyResultAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -222,10 +240,15 @@ class SurveyController extends Controller
 
     }
 
+
     /**
      * Show a survey results (all results)
      *
      * @Route("/survey/{id}/result", name="survey_show", requirements={"id" = "\d+"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function showSurveyResultAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -246,10 +269,16 @@ class SurveyController extends Controller
         return $this->render('survey/surveyView.html.twig', array('survey'=>$survey));
     }
 
+
     /**
      * Show a survey results (all results)
      *
      * @Route("/survey/{id}/result/{respondent_id}", name="survey_single_result", requirements={"id" = "\d+", "respondent_id" = "\d+"})
+     *
+     * @param $id
+     * @param $respondent_id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function showSingleSurveyResultAction($id, $respondent_id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -280,10 +309,15 @@ class SurveyController extends Controller
         return $this->render('survey/singleSurveyResultView.html.twig', array('survey'=>$survey, 'respondent'=>$respondent));
     }
 
+
     /**
      * Public view of a survey
      *
      * @Route("/survey/{id}/view", name="survey_view_public", requirements={"id" = "\d+"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function publicViewSurveyAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
