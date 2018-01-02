@@ -29,6 +29,7 @@
         <div class="form-group">
             {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
             {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            <a href="{{ path('list_questions') }}" class="btn btn-warning">Annuler</a>
         </div>
         {# Génération automatique des champs pas encore écrits.
            Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)

@@ -10,10 +10,17 @@ namespace AppBundle\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class AppUserBundle
+ * @package AppBundle\UserBundle
+ */
 class AppUserBundle extends Bundle
 {
+    /**
+     * @return string
+     */
     public function getParent()
     {
-        return 'FOSUserBundle' ;
+        return 'FOSUserBundle';
     }
 }

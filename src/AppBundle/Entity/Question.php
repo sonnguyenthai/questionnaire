@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+
 /**
- * Question
+ * Class Question
+ * @package AppBundle\Entity
  */
 class Question
 {

@@ -6,15 +6,14 @@
  * Time: 20:23
  */
 
-namespace AppBundle\Controller ;
+namespace AppBundle\Controller;
 
 use FOS\UserBundle\Controller\RegistrationController as BaseController;
-use AppBundle\Form\UserType ;
-use AppBundle\Entity\User ;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller ;
-use Symfony\Component\HttpFoundation\Request ;
-use Symfony\Component\Routing\Annotation\Route ;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface ;
+
+
+use Symfony\Component\HttpFoundation\Request;
+
+
 use FOS\UserBundle\Event\FilterUserResponseEvent;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
@@ -28,47 +27,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+/**
+ * Class RegistrationController
+ * @package AppBundle\Controller
+ */
 class RegistrationController extends BaseController
 {
-    /**
-     * @Route("/register", name="user_registration")
-     *     public function registerAction ( Request $request , UserPasswordEncoderInterface $passwordEncoder )
-    {
-
-    // 1) build the form
-    $user = new User ();
-    $form = $this -> createForm ( UserType :: class , $user );
-    $user->setEnabled(true);
-
-    // 2) handle the submit (will only happen on POST)
-    $form -> handleRequest ( $request );
-    if ( $form -> isSubmitted () && $form -> isValid ()) {
-
-    // 3) Encode the password (you could also do this via Doctrine listener)
-    $password = $passwordEncoder -> encodePassword ( $user , $user -> getPlainPassword ());
-    $user -> setPassword ( $password );
-
-    // 4) save the User!
-    $em = $this -> getDoctrine () -> getManager ();
-    $em -> persist ( $user );
-    $em -> flush ();
-
-    // ... do any other work - like sending them an email, etc
-    // maybe set a "flash" success message for the user
-
-    //return $this -> redirectToRoute ( 'home' );
-
-    return $this->render('registration/confirmed.html.twig');
-    }
-
-    return $this -> render (
-    'registration/register.html.twig' ,
-    array ( 'form' => $form -> createView ())
-    );
-    }
-
-     */
-
     /**
      * @param Request $request
      *
@@ -119,10 +83,6 @@ class RegistrationController extends BaseController
 
             $event = new FormEvent($form, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
-
-            if (null !== $response = $event->getResponse()) {
-                return $response;
-            }
         }
 
         return $this->render('registration/register.html.twig', array(
@@ -157,7 +117,7 @@ class RegistrationController extends BaseController
      * Receive the confirmation token from user email provider, login the user.
      *
      * @param Request $request
-     * @param string  $token
+     * @param string $token
      *
      * @return Response
      */
@@ -222,5 +182,6 @@ class RegistrationController extends BaseController
         if ($this->get('session')->has($key)) {
             return $this->get('session')->get($key);
         }
+        return null ;
     }
 }

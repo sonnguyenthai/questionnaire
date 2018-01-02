@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+
 /**
- * Choice
+ * Class Choice
+ * @package AppBundle\Entity
  */
 class Choice
 {

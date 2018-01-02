@@ -10,8 +10,7 @@ namespace AppBundle\Controller;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
 
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Choice;
@@ -125,14 +124,13 @@ class QuestionController extends Controller
                 if ($survey_id){
                     $survey_repo = $this->getDoctrine()->getRepository(Survey::class);
                     $survey = $survey_repo->find($survey_id);
-                    if ($survey){
-                        if ($survey->getUser() == $user){
-                            $survey_question = new SurveyQuestion();
-                            $survey_question->setQuestion($question);
-                            $survey_question->setSurvey($survey);
-                            $em->persist($survey_question);
-                            $em->flush();
-                        }
+                    if ($survey && $survey->getUser() == $user)
+                    {
+                        $survey_question = new SurveyQuestion();
+                        $survey_question->setQuestion($question);
+                        $survey_question->setSurvey($survey);
+                        $em->persist($survey_question);
+                        $em->flush();
                     }
                 }
 

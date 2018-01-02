@@ -3,7 +3,8 @@
 namespace AppBundle\Entity;
 
 /**
- * SurveyQuestion
+ * Class SurveyQuestion
+ * @package AppBundle\Entity
  */
 class SurveyQuestion
 {
@@ -134,11 +135,8 @@ class SurveyQuestion
     }
 
     /**
-     * Set survey
-     *
-     * @param \AppBundle\Entity\Survey $survey
-     *
-     * @return SurveyQuestion
+     * @param Survey|null $survey
+     * @return $this
      */
     public function setSurvey(\AppBundle\Entity\Survey $survey = null)
     {
