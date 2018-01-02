@@ -135,6 +135,8 @@ class QuestionController extends Controller
                             $survey_question->setSurvey($survey);
                             $em->persist($survey_question);
                             $em->flush();
+                            $this->addFlash("success", "Added question to the survey successfully");
+                            return $this->redirectToRoute('survey_edit', array('id'=>$survey_id));
                         }
                     }
                 }

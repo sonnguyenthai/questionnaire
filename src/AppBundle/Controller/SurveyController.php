@@ -17,7 +17,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class SurveyController extends Controller
 {
@@ -83,7 +85,6 @@ class SurveyController extends Controller
                 'choices' => $availableQuestions,
                 'multiple'=> true,
                 'choice_label' => function($question, $key, $index) {
-                    /** @var Category $category */
                     return $question->getContent();
                 }
                 ])
@@ -94,9 +95,9 @@ class SurveyController extends Controller
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
-                // $form->getData() holds the submitted values
-                // but, the original `$task` variable has also been updated
                 $questions = $form->get('questions')->getData();
+
+                // DatatablesBundle has an error in escaping out put. So we need to filter input. Did report this error and ask them to fix
                 $survey->setDescription(strip_tags($form->get('description')->getData()));
                 $survey->setName(strip_tags($form->get('name')->getData()));
                 $em = $this->getDoctrine()->getManager();
@@ -116,6 +117,7 @@ class SurveyController extends Controller
                 if ($form->get('next')->isClicked()){
                     return $this->redirectToRoute('question_add', array('survey' => $survey->getId()));
                 }
+                $this->addFlash("success", "Added survey ".$survey->getId()." successfully");
                 return $this->redirectToRoute('list_surveys');
             }
 
@@ -128,12 +130,105 @@ class SurveyController extends Controller
     /**
      * Edit a survey
      *
-     * @Route("/survey/{id}/edit", name="survey_edit")
+     * @Route("/survey/{id}/edit", name="survey_edit", requirements={"id" = "\d+"})
      */
-    public function editSurveyAction(){
+    public function editSurveyAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        $repository = $this->getDoctrine()->getRepository(Question::class);
+
+        $form = $this->createFormBuilder($survey)
+            ->add('name', TextType::class)
+            ->add('description', TextareaType::class)
+            ->add('save', SubmitType::class, array('label' => 'Finish'))
+            ->getForm();
+
+        if ($request->isMethod('POST')) {
+            $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                // DatatablesBundle has an error in escaping out put. So we need to filter input. Did report this error and ask them to fix
+                $survey->setDescription(strip_tags($form->get('description')->getData()));
+                $survey->setName(strip_tags($form->get('name')->getData()));
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($survey);
+                $em->flush();
+
+                $this->addFlash("success", "Updated survey ".$survey->getId()." successfully");
+                return $this->redirectToRoute('list_surveys');
+            }
+
+        }
+        return $this->render('survey/editSurvey.html.twig', array(
+            'form' => $form->createView(),
+            'survey' => $survey
+        ));
     }
 
+
+    /**
+     * Remove a question from a survey
+     *
+     * @Route("/survey/{id}/remove-question/{question_id}", name="survey_question_remove", requirements={"id" = "\d+", "question_id" = "\d+"})
+     *
+     * @param $id, $question_id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteSurveyQuestionAction($id, $question_id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        $survey_question = $em->getRepository('AppBundle:SurveyQuestion')->find($question_id);
+
+        if ($survey_question->getSurvey() != $survey){
+            $this->addFlash('danger', "The specific question does not belong to this survey");
+            return $this->redirectToRoute('survey_edit', array('id'=>$id));
+        }
+
+        $form = $this->createFormBuilder()
+            ->setAction($this->generateUrl('survey_question_remove', array('id'=>$id, 'question_id'=>$question_id)))
+            ->getForm();
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em->remove($survey_question);
+            $em->flush();
+
+            $this->addFlash('success', "The question with id ".$question_id." is removed successfully");
+
+            return $this->redirectToRoute('survey_edit', array('id'=>$id));
+        }
+
+        return $this->render('survey/removeSurveyQuestion.html.twig', array(
+            'survey' => $survey,
+            'form'   => $form->createView(),
+        ));
+    }
 
     /**
      * Delete a survey
@@ -160,7 +255,8 @@ class SurveyController extends Controller
             return $this->redirectToRoute('list_surveys');
         }
 
-        $form = $this->createFormBuilder()->getForm();
+        $form = $this->createFormBuilder()
+            ->getForm();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em->remove($survey);
