@@ -127,13 +127,16 @@ class QuestionController extends Controller
                 if ($survey_id){
                     $survey_repo = $this->getDoctrine()->getRepository(Survey::class);
                     $survey = $survey_repo->find($survey_id);
-                    if ($survey && $survey->getUser() == $user)
-                    {
-                        $survey_question = new SurveyQuestion();
-                        $survey_question->setQuestion($question);
-                        $survey_question->setSurvey($survey);
-                        $em->persist($survey_question);
-                        $em->flush();
+                    if ($survey){
+                        if ($survey->getUser() == $user){
+                            $survey_question = new SurveyQuestion();
+                            $survey_question->setQuestion($question);
+                            $survey_question->setSurvey($survey);
+                            $em->persist($survey_question);
+                            $em->flush();
+                            $this->addFlash("success", "Added question to the survey successfully");
+                            return $this->redirectToRoute('survey_edit', array('id'=>$survey_id));
+                        }
                     }
                 }
 
