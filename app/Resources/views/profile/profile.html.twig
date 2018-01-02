@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+    - Profile
+{% endblock %}
+
+{% block page_content_title %}
+    Votre Profile
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="jumbotron">
+            <p>
+                Pseudo: {{ user.username }}
+            </p>
+            <p>
+                Email: {{ user.email }}
+            </p>
+            <p>
+                Nom: {{ user.lastname }}
+            </p>
+            <p>
+                Prénom: {{ user.firstname }}
+            </p>
+        </div>
+        <a href="{{ path('user_profile_edit') }}" type="button" class="btn btn-lg btn-info">
+            Éditer votre profile
+        </a>
+        <a href="{{ path('user_profile_password') }}" type="button" class="btn btn-lg btn-info">
+            Changer votre mot de passe
+        </a>
+        <a href="{{ path('home') }}" class="btn btn-lg btn-danger">
+            Retour
+        </a>
+    </div>
+{% endblock %}

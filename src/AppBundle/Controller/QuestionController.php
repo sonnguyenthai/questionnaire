@@ -180,7 +180,7 @@ class QuestionController extends Controller
     }
 
     /**
-     * Add new question.
+     * Update question with id number {id}.
      *
      * @Route("/question/{id}/edit", name="question_edit", requirements={"id" = "\d+"})
      * @Method({"POST", "GET"})

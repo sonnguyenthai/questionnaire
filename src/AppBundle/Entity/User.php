@@ -35,12 +35,12 @@ class User extends BaseUser
     /**
      * @var string
      */
-    private $first_name = '';
+    protected $first_name ;
 
     /**
      * @var string
      */
-    private $last_name = '';
+    protected $last_name  ;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)

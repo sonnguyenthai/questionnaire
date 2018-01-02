@@ -18,7 +18,7 @@
                         {{ res.id }}
                     </td>
                     <td>
-                        <a href="{{ path('survey_single_result', {'id':survey.id, 'respondent_id': res.id}) }}">
+                        <a href="{{ path('survey_single_result', {'id':survey.id, 'respondent_id': res.id}) }}" style="text-decoration: none">
                             {{ res.name }}
                         </a>
                     </td>
@@ -30,6 +30,6 @@
         </tbody>
     </table>
     <div class="form-group">
-        <a href="{{ path('survey_export', {'id': survey.id}) }}"><button type="button" class="btn-primary">Export CSV</button> </a>
+        <a href="{{ path('survey_export', {'id': survey.id}) }}" class="btn btn-primary">Export CSV</a>
     </div>
 {% endblock %}
