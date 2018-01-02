@@ -215,7 +215,7 @@ class SurveyController extends Controller
                 'results'=>$results
             )
         );
-        $fic = 'survey_'.$id. \date("Y-m-d") . '.csv';
+        $fic = 'survey_'.$id.'_'. \date("Y-m-d").'.csv';
         $res->headers->set('Content-Disposition','attachment; filename="'.$fic.'"');
         $res->headers->set('Content-Type', 'text/csv');
         return $res;
