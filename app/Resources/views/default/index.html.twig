@@ -19,9 +19,9 @@
         <p>
             Description générale
         </p>
-        <button href="/survey" type="button" class="btn btn-lg btn-block btn-info">
-            Voir la liste
-        </button>
+        <a href="{{ path('list_surveys') }}" class="btn btn-lg btn-block btn-info">
+            Voir la liste des enquêtes
+        </a>
     </div>
     <div class="col-md-6">
         <h2 class="text-center">
@@ -30,9 +30,9 @@
         <p>
             Description générale
         </p>
-        <button href="/questions" type="button" class="btn btn-info btn-block btn-lg">
-            Voir la liste
-        </button>
+        <a href="{{ path('list_questions') }}" class="btn btn-info btn-block btn-lg">
+            Voir les questions
+        </a>
     </div>
     {% else %}
         <div class="col-md-12">
@@ -44,7 +44,7 @@
                     Vous n'êtes pas connecté. Si vous avez un compte cliquez sur le bouton connexion. Sinon inscrivez-vous!! C'est rapide et gratuit!
                 </p>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="thumbnail">
                             <img alt="Bootstrap Thumbnail First" src="http://lorempixel.com/output/people-q-c-600-200-1.jpg" />
                             <div class="caption">
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="thumbnail">
                             <img alt="Bootstrap Thumbnail Second" src="http://lorempixel.com/output/city-q-c-600-200-1.jpg" />
                             <div class="caption">
@@ -70,22 +70,9 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="thumbnail">
-                            <img alt="Bootstrap Thumbnail Third" src="http://lorempixel.com/output/sports-q-c-600-200-1.jpg" />
-                            <div class="caption">
-                                <h3>
-                                    Enquête - ODI
-                                </h3>
-                                <p>
-                                    Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <p class="text-center">
-                    <a class="btn btn-primary btn-lg" href="/register">S'inscrire</a>
+                    <a class="btn btn-primary btn-lg" href="{{  path('register') }}">S'inscrire</a>
                 </p>
             </div>
         </div>
