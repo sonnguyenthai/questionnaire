@@ -24,8 +24,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ProfileController extends BaseController
 {
+
     /**
      * Show the user.
+     *
+     * @return Response
      */
     public function showAction()
     {
