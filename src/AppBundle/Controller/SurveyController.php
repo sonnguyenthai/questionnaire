@@ -131,7 +131,7 @@ class SurveyController extends Controller
     /**
      * Remove a survey
      *
-     * @Route("/survey/{id}/delete", name="survey_delete")
+     * @Route("/survey/{id}/delete", name="survey_delete", requirements={"id" = "\d+"})
      */
     public function deleteSurveyAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -167,18 +167,125 @@ class SurveyController extends Controller
     }
 
     /**
-     * Show a survey
+     * Export all results of a survey to a csv file
      *
-     * @Route("/survey/{id}/show", name="survey_show")
+     * @Route("/survey/{id}/result/export", name="survey_export", requirements={"id" = "\d+"})
      */
-    public function showSurveyAction(){
+    public function exportSurveyResultAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        $results = array();
+        $headers = array();
+        $respondents = $survey->getRespondents();
+        foreach ($respondents as $res){
+            $result = array($res->getName(), $res->getTimestamp()->format('Y-m-d H:i'));
+            $headers = array("respondent", "timestamp");
+            foreach ($res->getAnswers() as $answer){
+                $question = $answer->getSurveyQuestion()->getQuestion()->getContent();
+                $headers[] = $question;
+                if ($answer->getSurveyQuestion()->getQuestion()->getQuestionType() == "text"){
+                    $result[] = $answer->getContent();
+                }else{
+                    $selected_choice = array();
+                    foreach ($answer->getChoices() as $choice){
+                        $selected_choice[] = $choice->getContent();
+                    }
+                    $result[] = join("|", $selected_choice);
+                }
+            }
+            $results[] = $result;
+        }
+
+
+        $res = $this->render('survey/surveyResult.csv.twig',
+            array(
+                'survey'=>$survey,
+                'headers'=>$headers,
+                'results'=>$results
+            )
+        );
+        $fic = 'survey_'.$id. \date("Y-m-d") . '.csv';
+        $res->headers->set('Content-Disposition','attachment; filename="'.$fic.'"');
+        $res->headers->set('Content-Type', 'text/csv');
+        return $res;
+
+    }
+
+    /**
+     * Show a survey results (all results)
+     *
+     * @Route("/survey/{id}/result", name="survey_show", requirements={"id" = "\d+"})
+     */
+    public function showSurveyResultAction($id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        return $this->render('survey/surveyView.html.twig', array('survey'=>$survey));
+    }
+
+    /**
+     * Show a survey results (all results)
+     *
+     * @Route("/survey/{id}/result/{respondent_id}", name="survey_single_result", requirements={"id" = "\d+", "respondent_id" = "\d+"})
+     */
+    public function showSingleSurveyResultAction($id, $respondent_id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $survey = $em->getRepository('AppBundle:Survey')->find($id);
+
+        if (null === $survey) {
+            throw new NotFoundHttpException("The survey with id ".$id." doesn't exist");
+        }
+
+        if ($survey->getUser() != $user){
+            $this->addFlash('danger', "The survey with id ".$id." does't belong to you");
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        $respondent = $em->getRepository('AppBundle:Respondent')->find($respondent_id);
+        if (null === $respondent) {
+            throw new NotFoundHttpException("The respondent with id ".$respondent_id." doesn't exist");
+        }
+
+        if ($respondent->getSurvey() != $survey){
+            $this->addFlash( "danger","The specific respondent ".$respondent_id." doesnt belong to the survey ".$id);
+            return $this->redirectToRoute('list_surveys');
+        }
+
+        return $this->render('survey/singleSurveyResultView.html.twig', array('survey'=>$survey, 'respondent'=>$respondent));
     }
 
     /**
      * Public view of a survey
      *
-     * @Route("/survey/{id}/view", name="survey_view_public")
+     * @Route("/survey/{id}/view", name="survey_view_public", requirements={"id" = "\d+"})
      */
     public function publicViewSurveyAction($id, Request $request){
         $em = $this->getDoctrine()->getManager();
@@ -212,8 +319,11 @@ class SurveyController extends Controller
                     $choice_id = $request->request->get($answer_name);
                     $choice = $em->getRepository("AppBundle:Choice")->find($choice_id);
                     if ($choice){
-                        $answer->setContent("");
-                        $answer->addChoice($choice);
+                        // Check if the choice belongs to the current question
+                        if ($choice->getQuestion() == $question){
+                            $answer->setContent("");
+                            $answer->addChoice($choice);
+                        }
                     }
                 }else{
                     $choices = $request->request->get($answer_name);
@@ -221,7 +331,10 @@ class SurveyController extends Controller
                     foreach ($choices as $choiceId){
                         $choice = $em->getRepository("AppBundle:Choice")->find($choiceId);
                         if ($choice){
-                            $answer->addChoice($choice);
+                            // Check if the choice belongs to the current question
+                            if ($choice->getQuestion() == $question) {
+                                $answer->addChoice($choice);
+                            }
                         }
                     }
                 }

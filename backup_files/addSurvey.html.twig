@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+{% block page_content_title %}
+    Add new Survey
+{% endblock %}
+
+{% block content %}
+    <form method="POST" action="{{ path('add_survey') }}" >
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('add_survey') }}">
+        <div class="form-group">
+            <label>Survey Name</label>
+            <input class="form-control" name="survey_name">
+            <p class="help-block">Name of the survey</p>
+        </div>
+        <div class="form-group">
+            <label>Select Questions</label>
+            <select multiple class="form-control" name="selected_questions">
+                <option>Question 1</option>
+                <option>Question 2</option>
+                <option>Question 3</option>
+                <option>Question 4</option>
+                <option>Question 5</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-default">Save</button>
+        <button type="submit" class="btn btn-default">Save n Add New Question</button>
+    </form>
+{% endblock %}
+
+// Code goes here
+angular.module('modalApp', ['modal-form']).
+run(['$rootScope', '$window', 'formService', function($rootScope, $window, formService) {
+$rootScope.data = {
+choice_content: "",
+question_id: {{ question.id }}
+};
+
+$rootScope.success = function(config, data) {
+$("#choices").append('<div class="form-group"><input type="text" class="form-control" value="'+$rootScope.data.choice+'"  disabled></div>');
+};
+// open modal form dynamically
+$rootScope.open = formService({
+data: $rootScope.data,
+templateUrl: '{{ asset("html/addChoiceModal.html") }}',
+method: 'POST',
+callback: $rootScope.success,
+path: "{{ path('choice_add') }}",
+dialogClass: 'small',
+closeOnSuccess: true
+});
+}]);

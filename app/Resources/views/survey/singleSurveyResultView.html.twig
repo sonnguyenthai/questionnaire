@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+
+{% block page_content_title %} Result of survey {{ survey.id }}{% endblock %}
+
+{% block content %}
+    <h4>Respondent: {{ respondent.name }}</h4>
+    <ol>
+        {% for answer in respondent.answers %}
+            <li class="form-group">
+                <h5>{{ answer.surveyQuestion.question.content }}</h5>
+                {% if answer.surveyQuestion.question.questionType=="text" %}
+                    <textarea class="form-control" disabled>{{ answer.content }}</textarea>
+                {% else %}
+                    <ul class="list-unstyled">
+                        {% for choice in answer.choices %}
+                            <li class="checkbox">
+                                {{ choice.content }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

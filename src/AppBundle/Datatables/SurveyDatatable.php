@@ -50,9 +50,14 @@ class SurveyDatatable extends AbstractDatatable
         $this->features->set(array(
         ));
 
+        $this->extensions->set(array(
+            'responsive' => true
+        ));
+
         $this->columnBuilder
             ->add('id', Column::class, array(
                 'title' => 'Id',
+                'width' => '40px'
                 ))
             ->add('name', Column::class, array(
                 'title' => 'Name',
@@ -68,6 +73,7 @@ class SurveyDatatable extends AbstractDatatable
                 ))
             ->add('user.username', Column::class, array(
                 'title' => 'User',
+                'width' => '100px'
                 ))
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
@@ -96,6 +102,20 @@ class SurveyDatatable extends AbstractDatatable
                         'attributes' => array(
                             'rel' => 'tooltip',
                             'title' => $this->translator->trans('sg.datatables.actions.edit'),
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
+                        ),
+                    ),
+                    array(
+                        'route' => 'survey_show',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => 'Result',
+                        'icon' => 'glyphicon glyphicon-eye-open',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => 'Result',
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),
