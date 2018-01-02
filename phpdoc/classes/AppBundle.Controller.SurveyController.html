@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/AppBundle.html">\AppBundle</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">92</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-275182209"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-275182209" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1674910548"></a>
+                                <a href="../namespaces/AppBundle.html" style="margin-left: 30px; padding-left: 0">AppBundle</a>
+            </div>
+            <div id="namespace-1674910548" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1077315124"></a>
+                                <a href="../namespaces/AppBundle.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
+            </div>
+            <div id="namespace-1077315124" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AppBundle.Controller.ChangePasswordController.html">ChangePasswordController</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Controller.DefaultController.html">DefaultController</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Controller.ProfileController.html">ProfileController</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Controller.QuestionController.html">QuestionController</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Controller.RegistrationController.html">RegistrationController</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Controller.SecurityController.html">SecurityController</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Controller.SurveyController.html">SurveyController</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1186221165"></a>
+                                <a href="../namespaces/AppBundle.Datatables.html" style="margin-left: 30px; padding-left: 0">Datatables</a>
+            </div>
+            <div id="namespace-1186221165" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AppBundle.Datatables.QuestionDatatable.html">QuestionDatatable</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Datatables.SurveyDatatable.html">SurveyDatatable</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-322133124"></a>
+                                <a href="../namespaces/AppBundle.Entity.html" style="margin-left: 30px; padding-left: 0">Entity</a>
+            </div>
+            <div id="namespace-322133124" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AppBundle.Entity.Answer.html">Answer</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Entity.Choice.html">Choice</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Entity.Question.html">Question</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Entity.Respondent.html">Respondent</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Entity.Survey.html">Survey</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Entity.SurveyQuestion.html">SurveyQuestion</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Entity.User.html">User</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1761213893"></a>
+                                <a href="../namespaces/AppBundle.Form.html" style="margin-left: 30px; padding-left: 0">Form</a>
+            </div>
+            <div id="namespace-1761213893" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AppBundle.Form.ChangePasswordType.html">ChangePasswordType</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Form.ProfileType.html">ProfileType</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Form.QuestionType.html">QuestionType</a></li>
+                                                    <li class="class"><a href="../classes/AppBundle.Form.RegistrationType.html">RegistrationType</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2111949840"></a>
+                                <a href="../namespaces/AppBundle.UserBundle.html" style="margin-left: 30px; padding-left: 0">UserBundle</a>
+            </div>
+            <div id="namespace-2111949840" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AppBundle.UserBundle.AppUserBundle.html">AppUserBundle</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/AppBundle.AppBundle.html">AppBundle</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/AppBundle.Controller.html">\AppBundle\Controller</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\AppBundle\Controller</small>SurveyController</h1>
+                    <p><em></em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_listSurveysAction" class="">listSurveysAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_addSurveyAction" class="">addSurveyAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_editSurveyAction" class="">editSurveyAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_deleteSurveyQuestionAction" class="">deleteSurveyQuestionAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_deleteSurveyAction" class="">deleteSurveyAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_exportSurveyResultAction" class="">exportSurveyResultAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_showSurveyResultAction" class="">showSurveyResultAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_showSingleSurveyResultAction" class="">showSingleSurveyResultAction()</a><br />
+                                                                    <a href="../classes/AppBundle.Controller.SurveyController.html#method_publicViewSurveyAction" class="">publicViewSurveyAction()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <em>No protected methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Controller.SurveyController.html"><div class="path-wrapper">Controller/SurveyController.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper">\Symfony\Bundle\FrameworkBundle\Controller\Controller</div>
+                                                                                                    <div class="namespace-wrapper">\AppBundle\Controller\SurveyController</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_listSurveysAction" name="method_listSurveysAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">listSurveysAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">listSurveysAction(\Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Lists all Survey entities.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/surveys&quot;, name=&quot;list_surveys&quot;)</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_addSurveyAction" name="method_addSurveyAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">addSurveyAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">addSurveyAction(\Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Add a new Survey</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/add&quot;, name=&quot;survey_add&quot;)</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_editSurveyAction" name="method_editSurveyAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">editSurveyAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">editSurveyAction(  <span class="argument">$id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) </pre>
+                <p><em>Edit a survey</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/edit&quot;, name=&quot;survey_edit&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_deleteSurveyQuestionAction" name="method_deleteSurveyQuestionAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">deleteSurveyQuestionAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">deleteSurveyQuestionAction(  <span class="argument">$id</span>,   <span class="argument">$question_id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Remove a question from a survey</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$question_id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/remove-question/{question_id}&quot;, name=&quot;survey_question_remove&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;, &quot;question_id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_deleteSurveyAction" name="method_deleteSurveyAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">deleteSurveyAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">deleteSurveyAction(  <span class="argument">$id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Delete a survey</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/delete&quot;, name=&quot;survey_delete&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_exportSurveyResultAction" name="method_exportSurveyResultAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">exportSurveyResultAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">exportSurveyResultAction(  <span class="argument">$id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Export all results of a survey to a csv file</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/result/export&quot;, name=&quot;survey_export&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_showSurveyResultAction" name="method_showSurveyResultAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">showSurveyResultAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">showSurveyResultAction(  <span class="argument">$id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Show a survey results (all results)</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/result&quot;, name=&quot;survey_show&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_showSingleSurveyResultAction" name="method_showSingleSurveyResultAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">showSingleSurveyResultAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">showSingleSurveyResultAction(  <span class="argument">$id</span>,   <span class="argument">$respondent_id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Show a survey results (all results)</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td></td>
+                                <td>$respondent_id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/result/{respondent_id}&quot;, name=&quot;survey_single_result&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;, &quot;respondent_id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_publicViewSurveyAction" name="method_publicViewSurveyAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">publicViewSurveyAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">publicViewSurveyAction(  <span class="argument">$id</span>, \Symfony\Component\HttpFoundation\Request  <span class="argument">$request</span>) : \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response</pre>
+                <p><em>Public view of a survey</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$id </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Symfony\Component\HttpFoundation\Request</td>
+                                <td>$request </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            Route
+                        </th>
+                        <td>
+                                                                                            <p>(&quot;/survey/{id}/view&quot;, name=&quot;survey_view_public&quot;, requirements={&quot;id&quot; = &quot;\d+&quot;})</p>
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">SurveyController.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Controller/SurveyController.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/AppBundle.html">\AppBundle</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on January 2nd, 2018 at 17:38.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
