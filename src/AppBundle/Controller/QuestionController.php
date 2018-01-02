@@ -10,8 +10,7 @@ namespace AppBundle\Controller;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
 
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Choice;

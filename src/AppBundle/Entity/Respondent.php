@@ -2,8 +2,10 @@
 
 namespace AppBundle\Entity;
 
+
 /**
- * Respondent
+ * Class Respondent
+ * @package AppBundle\Entity
  */
 class Respondent
 {
