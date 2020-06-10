@@ -9,8 +9,12 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
+
     /**
      * @Route("/", name="homepage")
+     *
+     * @param Request $request
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -19,8 +23,12 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }
+
+
     /**
      * @Route("/admin")
+     *
+     * @return Response
      */
     public function admin()
     {

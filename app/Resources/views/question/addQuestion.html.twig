@@ -29,9 +29,10 @@
         <div ng-app="addChoice" ng-controller="cntr" id="add_choice_div" style="padding-bottom: 5px;">
             <div ng-repeat="item in inputs" class="form-group">
                 <label>Choice</label>
-                <input ng-model="item.value" name="choice[]" class="form-control" />
+                <input ng-model="item.value" name="choice[]" class="form-control" required/>
             </div>
-            <button type="button" ng-click="addfield()" id="add_field_btn" class="btn-default" disabled>Add Choice</button>
+            <button type="button" ng-click="addfield()" id="add_field_btn" class="btn btn-info" disabled> <i class="fa fa-plus"></i>
+                Add Choice</button>
         </div>
 
         <div class="form-group">

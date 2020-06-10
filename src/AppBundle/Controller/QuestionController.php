@@ -10,8 +10,7 @@ namespace AppBundle\Controller;
 
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method; #DOT NOT UNCOMMENT EVEN IF AN ERROR OCCUR
 
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Choice;
@@ -20,24 +19,21 @@ use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Datatables\QuestionDatatable;
 use AppBundle\Form\QuestionType;
 
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 class QuestionController extends Controller
 {
+
     /**
      * Lists all Question entities.
      *
      * @Route("/questions", name="list_questions")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listQuestionAction(Request $request)
     {
@@ -65,6 +61,10 @@ class QuestionController extends Controller
         ));
     }
 
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function viewAction($id)
     {
         $repository = $this->getDoctrine()->getManager()->getRepository(Question::class);
@@ -76,10 +76,14 @@ class QuestionController extends Controller
 
     }
 
+
     /**
      * Add new question.
      *
      * @Route("/question/add", name="question_add")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addAction(Request $request)
     {
@@ -101,7 +105,10 @@ class QuestionController extends Controller
             // On vérifie que les valeurs entrées sont correctes
             // (Nous verrons la validation des objets en détail dans le prochain chapitre)
             if ($form->isValid()) {
-                // On enregistre notre objet $question dans la base de données, par exemple
+
+                // DatatablesBundle has an error in escaping out put. So we need to filter input. Did report this error and ask them to fix
+                $question->setContent(strip_tags($form->get('content')->getData()));
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($question);
                 $em->flush();
@@ -121,11 +128,15 @@ class QuestionController extends Controller
                     $survey_repo = $this->getDoctrine()->getRepository(Survey::class);
                     $survey = $survey_repo->find($survey_id);
                     if ($survey){
-                        $survey_question = new SurveyQuestion();
-                        $survey_question->setQuestion($question);
-                        $survey_question->setSurvey($survey);
-                        $em->persist($survey_question);
-                        $em->flush();
+                        if ($survey->getUser() == $user){
+                            $survey_question = new SurveyQuestion();
+                            $survey_question->setQuestion($question);
+                            $survey_question->setSurvey($survey);
+                            $em->persist($survey_question);
+                            $em->flush();
+                            $this->addFlash("success", "Added question to the survey successfully");
+                            return $this->redirectToRoute('survey_edit', array('id'=>$survey_id));
+                        }
                     }
                 }
 
@@ -142,20 +153,31 @@ class QuestionController extends Controller
 
     }
 
+
     /**
      * Delete a Question.
      *
-     * @Route("/question/{id}/delete", name="question_delete")
+     * @Route("/question/{id}/delete", name="question_delete", requirements={"id" = "\d+"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function deleteAction($id, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository('AppBundle:Question')->find($id);
 
         if (null === $question) {
             throw new NotFoundHttpException("La question d'id ".$id." n'existe pas.");
+        }
+
+        if ($question->getUser() != $user){
+            $this->addFlash('danger', 'The question with ID '.$id.' does not belong to you');
+            return $this->redirectToRoute('list_questions');
         }
 
         // On crée un formulaire vide, qui ne contiendra que le champ CSRF
@@ -178,15 +200,21 @@ class QuestionController extends Controller
         ));
     }
 
+
     /**
-     * Add new question.
+     * Update question with id number {id}.
      *
      * @Route("/question/{id}/edit", name="question_edit", requirements={"id" = "\d+"})
      * @Method({"POST", "GET"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function updateAction($id, Request $request)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $user = $this->getUser();
 
         $em = $this->getDoctrine()->getManager();
         $question = $em->getRepository('AppBundle:Question')->find($id);
@@ -196,12 +224,19 @@ class QuestionController extends Controller
             );
         }
 
+        if ($question->getUser() != $user){
+            $this->addFlash('danger', 'The question with ID '.$id.' does not belong to you');
+            return $this->redirectToRoute('list_questions');
+        }
+
         $form = $this->createForm(QuestionType::class, $question);
         $choices = $question->getChoices();
 
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
             $question = $form->getData();
+            // DatatablesBundle has an error in escaping out put. So we need to filter input. Did report this error and ask them to fix
+            $question->setContent(strip_tags($form->get('content')->getData()));
 
             if ($form->get('question_type')->getData() == "text"){
                 foreach ($choices as $choice){
@@ -224,11 +259,16 @@ class QuestionController extends Controller
                 ));
     }
 
+
     /**
      * Add Choice entity
      *
-     * @Route("question/{id}/add-choice", name="choice_add")
+     * @Route("question/{id}/add-choice", name="choice_add", requirements={"id" = "\d+"})
      * @Method({"POST", "GET"})
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function addChoiceAction($id, Request $request){
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -240,7 +280,7 @@ class QuestionController extends Controller
             $choice->setQuestion($question);
             $form = $this->createFormBuilder($choice)
                 ->setAction($this->generateUrl('choice_add', array('id'=>$id)))
-                ->add('content', TextType::class)->getForm();
+                ->add('content', TextType::class, array('required'=>1))->getForm();
 
             if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
                 $em->persist($choice);
@@ -253,6 +293,49 @@ class QuestionController extends Controller
         }else{
             $this->addFlash('danger', 'Can not find Question object with ID ='.$id);
             return $this->redirectToRoute("list_questions");
+        }
+    }
+
+
+    /**
+     * Remove a Choice entity
+     *
+     * @Route("question/{question_id}/choice/{id}/delete", name="choice_delete", requirements={"id" = "\d+", "question_id" = "\d+"})
+     * @Method({"POST", "GET"})
+     *
+     * @param $question_id
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function removeChoiceAction($question_id, $id, Request $request){
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        $em = $this->getDoctrine()->getManager();
+        $choice = $em->getRepository('AppBundle:Choice')->find($id);
+
+        if ($choice) {
+            if ($choice->getQuestion()->getId() != $question_id){
+                $this->addFlash('danger', 'The specific choice doesnt belong to this question');
+                return $this->redirectToRoute('question_edit',array('id'=>$question_id));
+            }
+
+            $form = $this->createFormBuilder()
+                ->setAction($this->generateUrl('choice_delete', array('id'=>$id, 'question_id'=>$question_id)))->getForm();
+
+            if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+                $em->remove($choice);
+                $em->flush();
+
+                $this->addFlash('success', 'Removed one choice successfully');
+                return $this->redirectToRoute('question_edit',array('id'=>$question_id));
+            }
+            return $this->render("question/deleteChoice.html.twig",
+                array('form'=>$form->createView(),
+                ));
+        }else{
+            $this->addFlash('danger', 'Choice not found for ID '.$id);
+            return $this->redirectToRoute('question_edit',array('id'=>$question_id));
         }
     }
 

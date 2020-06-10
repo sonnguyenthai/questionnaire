@@ -31,3 +31,6 @@ AppBundle\Entity\Survey:
         questions:
           targetEntity: AppBundle\Entity\SurveyQuestion
           mappedBy: survey
+        respondents:
+          targetEntity: AppBundle\Entity\Respondent
+          mappedBy: survey

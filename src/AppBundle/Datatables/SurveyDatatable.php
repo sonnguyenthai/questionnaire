@@ -3,22 +3,9 @@
 namespace AppBundle\Datatables;
 
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
-use Sg\DatatablesBundle\Datatable\Style;
 use Sg\DatatablesBundle\Datatable\Column\Column;
-use Sg\DatatablesBundle\Datatable\Column\BooleanColumn;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
-use Sg\DatatablesBundle\Datatable\Column\MultiselectColumn;
-use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
-use Sg\DatatablesBundle\Datatable\Column\ImageColumn;
-use Sg\DatatablesBundle\Datatable\Filter\TextFilter;
-use Sg\DatatablesBundle\Datatable\Filter\NumberFilter;
-use Sg\DatatablesBundle\Datatable\Filter\SelectFilter;
-use Sg\DatatablesBundle\Datatable\Filter\DateRangeFilter;
-use Sg\DatatablesBundle\Datatable\Editable\CombodateEditable;
-use Sg\DatatablesBundle\Datatable\Editable\SelectEditable;
-use Sg\DatatablesBundle\Datatable\Editable\TextareaEditable;
-use Sg\DatatablesBundle\Datatable\Editable\TextEditable;
 
 /**
  * Class SurveyDatatable
@@ -50,9 +37,14 @@ class SurveyDatatable extends AbstractDatatable
         $this->features->set(array(
         ));
 
+        $this->extensions->set(array(
+            'responsive' => true
+        ));
+
         $this->columnBuilder
             ->add('id', Column::class, array(
                 'title' => 'Id',
+                'width' => '40px'
                 ))
             ->add('name', Column::class, array(
                 'title' => 'Name',
@@ -68,12 +60,13 @@ class SurveyDatatable extends AbstractDatatable
                 ))
             ->add('user.username', Column::class, array(
                 'title' => 'User',
+                'width' => '100px'
                 ))
             ->add(null, ActionColumn::class, array(
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => array(
                     array(
-                        'route' => 'survey_show',
+                        'route' => 'survey_view_public',
                         'route_parameters' => array(
                             'id' => 'id'
                         ),
@@ -96,6 +89,20 @@ class SurveyDatatable extends AbstractDatatable
                         'attributes' => array(
                             'rel' => 'tooltip',
                             'title' => $this->translator->trans('sg.datatables.actions.edit'),
+                            'class' => 'btn btn-primary btn-xs',
+                            'role' => 'button'
+                        ),
+                    ),
+                    array(
+                        'route' => 'survey_show',
+                        'route_parameters' => array(
+                            'id' => 'id'
+                        ),
+                        'label' => 'Result',
+                        'icon' => 'glyphicon glyphicon-eye-open',
+                        'attributes' => array(
+                            'rel' => 'tooltip',
+                            'title' => 'Result',
                             'class' => 'btn btn-primary btn-xs',
                             'role' => 'button'
                         ),

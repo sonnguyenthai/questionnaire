@@ -3,7 +3,8 @@
 namespace AppBundle\Entity;
 
 /**
- * Survey
+ * Class Survey
+ * @package AppBundle\Entity
  */
 class Survey
 {
@@ -214,5 +215,44 @@ class Survey
     public function getUser()
     {
         return $this->user;
+    }
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $respondents;
+
+
+    /**
+     * Add respondent
+     *
+     * @param \AppBundle\Entity\Respondent $respondent
+     *
+     * @return Survey
+     */
+    public function addRespondent(\AppBundle\Entity\Respondent $respondent)
+    {
+        $this->respondents[] = $respondent;
+
+        return $this;
+    }
+
+    /**
+     * Remove respondent
+     *
+     * @param \AppBundle\Entity\Respondent $respondent
+     */
+    public function removeRespondent(\AppBundle\Entity\Respondent $respondent)
+    {
+        $this->respondents->removeElement($respondent);
+    }
+
+    /**
+     * Get respondents
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRespondents()
+    {
+        return $this->respondents;
     }
 }

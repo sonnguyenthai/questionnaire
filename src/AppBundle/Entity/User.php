@@ -4,10 +4,9 @@
 namespace AppBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM; // DO NOT DELETE
+use Symfony\Component\Validator\Constraints as Assert; // DO NOT DELETE
+
 
 /**
  * @ORM\Entity
@@ -35,25 +34,25 @@ class User extends BaseUser
     /**
      * @var string
      */
-    private $first_name = '';
+    protected $first_name;
 
     /**
      * @var string
      */
-    private $last_name = '';
+    protected $last_name;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      * @Assert\Email()
      */
-    protected $email ;
+    protected $email;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      */
-    protected $username ;
+    protected $username;
 
 
     /**
@@ -62,7 +61,7 @@ class User extends BaseUser
      *
      * @ORM\Column(type="string", length=64)
      */
-    protected $password ;
+    protected $password;
 
 
     /**
@@ -116,9 +115,9 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getEmail ()
+    public function getEmail()
     {
-        return $this -> email ;
+        return $this->email;
     }
 
 
@@ -126,9 +125,9 @@ class User extends BaseUser
      * @param string $email
      * @return $this
      */
-    public function setEmail ($email )
+    public function setEmail($email)
     {
-        $this -> email = $email ;
+        $this->email = $email;
 
         return $this;
     }
@@ -136,18 +135,18 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getUsername ()
+    public function getUsername()
     {
-        return $this -> username ;
+        return $this->username;
     }
 
     /**
      * @param string $username
      * @return $this
      */
-    public function setUsername ($username )
+    public function setUsername($username)
     {
-        $this -> username = $username ;
+        $this->username = $username;
 
         return $this;
     }
@@ -155,18 +154,18 @@ class User extends BaseUser
     /**
      * @return mixed
      */
-    public function getPassword ()
+    public function getPassword()
     {
-        return $this -> password ;
+        return $this->password;
     }
 
     /**
      * @param string $password
      * @return $this
      */
-    public function setPassword ($password )
+    public function setPassword($password)
     {
-        $this -> password = $password ;
+        $this->password = $password;
 
         return $this;
     }
@@ -174,10 +173,10 @@ class User extends BaseUser
     /**
      * @return null
      */
-    public function getSalt ()
+    public function getSalt()
     {
         // The bcrypt algorithm doesn't require a separate salt.
         // You *may* need a real salt if you choose a different encoder.
-        return null ;
+        return null;
     }
 }

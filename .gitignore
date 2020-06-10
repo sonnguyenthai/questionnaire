@@ -1,3 +1,4 @@
+/backup_files/*
 /.web-server-pid
 /app/config/parameters.yml
 /build/
@@ -16,3 +17,4 @@
 /vendor/
 /web/bundles/
 /.idea/
+

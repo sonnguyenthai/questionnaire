@@ -53,7 +53,7 @@
                                     <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
                                             class="icon-bar"></span><span class="icon-bar"></span>
                                 </button>
-                                <a class="navbar-brand" href="/">ODI Projet</a>
+                                <a class="navbar-brand" href="{{ path('home') }}">ODI Projet</a>
                             </div>
                             <!-- /.navbar-header -->
                         {% endblock %}
@@ -64,23 +64,26 @@
                                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            <i class="fa fa-user fa-fw"></i>{{ app.user.username }} <i class="fa fa-caret-down"></i>
+                                            <i class="fa fa-user fa-fw"></i>{{ app.user.username|escape }} <i class="fa fa-caret-down"></i>
                                         </a>
                                         <ul class="dropdown-menu dropdown-user">
-                                            <li class="disabled"><a href="/userprofile"><i class="fa fa-user fa-fw"></i> Mon compte</a>
+                                            <li><a href="{{ path('user_profile_show') }}"><i class="fa fa-user fa-fw"></i> Mon compte</a>
                                             </li>
-                                            <li><a href="{{ path('list_questions') }}"><i class="fa fa-user fa-fw"></i> Questions</a>
+                                            <li><a href="{{ path('list_questions') }}"><i class="fa fa-question fa-fw"></i> Questions</a>
                                             </li>
-                                            <li><a href="{{ path('list_surveys') }}"><i class="fa fa-user fa-fw"></i> Surveys</a>
+                                            <li><a href="{{ path('list_surveys') }}"><i class="fa fa-file-text fa-fw"></i> Surveys</a>
                                             </li>
                                             <li class="divider"></li>
-                                            <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
+                                            <li><a href="{{ path('logout') }}"><i class="fa fa-sign-out fa-fw"></i> Déconnexion</a>
                                             </li>
                                         </ul>
                                     </li>
                                 {% else %}
                                     <li>
-                                        <a href="/login"><i class="fa fa-sign-in fa-fw"></i> Connexion</a>
+                                        <a href="{{  path('register') }}">S'inscrire</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ path('login') }}"><i class="fa fa-sign-in fa-fw"></i> Connexion</a>
                                     </li>
                                 {% endif %}
                                 <!-- /.dropdown -->

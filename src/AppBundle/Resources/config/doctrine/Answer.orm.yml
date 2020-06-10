@@ -38,6 +38,8 @@ AppBundle\Entity\Answer:
             joinColumns:
               answer_id:
                 referencedColumnName: id
+                onDelete: CASCADE
             inverseJoinColumns:
               choice_id:
                 referencedColumnName: id
+                onDelete: CASCADE

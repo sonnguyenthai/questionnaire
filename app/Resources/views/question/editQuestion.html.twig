@@ -29,6 +29,7 @@
         <div class="form-group">
             {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
             {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            <a href="{{ path('list_questions') }}" class="btn btn-warning">Annuler</a>
         </div>
         {# Génération automatique des champs pas encore écrits.
            Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
@@ -44,6 +45,13 @@
             {% for choice in choices %}
                 <div class="form-group">
                     <input type="text" class="form-control" value="{{ choice.content }}"  disabled>
+                    <button type="button"  class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete_modal_{{ choice.id }}">Remove Choice</button>
+                </div>
+                <div id="delete_modal_{{ choice.id }}" class="modal fade" role="dialog">
+                    {{ render(controller(
+                    'AppBundle:Question:removeChoice',
+                    { 'question_id': question.id, 'id': choice.id }
+                    )) }}
                 </div>
             {% endfor %}
         </div>
