@@ -27,6 +27,7 @@ INSTALL
     $ php bin/console doctrine:schema:update --force
     ~~~  
     
+- Does it succed?
     
 Enjoy!
 
