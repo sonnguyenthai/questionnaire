@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block page_content_title %}Delete Question {{ question.id }}{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <div class="form-group">
+        Are you sure you want to delete this question?
+    </div>
+
+    <div class="form-group">
+        <button type="submit" id="add_new_choice_btn" class="btn btn-default btn-danger" >Yes</button>
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

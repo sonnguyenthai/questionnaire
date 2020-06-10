@@ -1,0 +1,40 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+
+logout:
+    path: /logout
+
+register:
+    path: /register
+    defaults: { _controller: AppBundle:Registration:register}
+
+confirm:
+    path: /confirmed
+    defaults: { _controller: AppBundle:Registration:confirmed}
+
+user_profile_show:
+    path: /userprofile
+    defaults: { _controller: AppBundle:Profile:show }
+
+user_profile_edit:
+    path: /userprofile/edit
+    defaults: { _controller: AppBundle:Profile:edit }
+
+user_profile_password:
+    path: /userprofile/updatepsw
+    defaults: { _controller: AppBundle:ChangePassword:changePassword }
+
+home:
+    path: /
+
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+sg_datatables_bundle:
+    resource: "@SgDatatablesBundle/Controller/"
+    type:     annotation
+    prefix:   /sg
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"

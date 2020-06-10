@@ -1,0 +1,18 @@
+AppBundle\Entity\Choice:
+    type:  entity
+    table: choice
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        content:
+            type: text
+    manyToOne:
+        question:
+          targetEntity: AppBundle\Entity\Question
+          joinColumn:
+            name: question_id
+            referencedColumnName: id
+            onDelete: CASCADE

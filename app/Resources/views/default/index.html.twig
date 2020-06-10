@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {{ parent() }}
+        - Accueil
+    {% else %}
+        {{ parent() }}
+        - Index
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <div class="col-md-6">
+        <h2 class="text-center">
+            Enquêtes
+        </h2>
+        <p class="text-center">
+            <img src="http://www.babydsdeli.com/wp-content/uploads/2017/10/survey_8.jpg" class="img-circle" height="420" width="420" />
+        </p>
+        <a href="{{ path('list_surveys') }}" class="btn btn-info btn-block btn-lg">
+            Voir la liste des enquêtes
+        </a>
+    </div>
+    <div class="col-md-6">
+        <h2 class="text-center">
+            Questions
+        </h2>
+        <p class="text-center">
+            <img src="https://w5coaching.com/wp-content/uploads/2012/08/question_mark_red-580x494.jpg" class="img-circle" height="420" width="420"/>
+        </p>
+        <a href="{{ path('list_questions') }}" class="btn btn-info btn-block btn-lg">
+            Voir les questions
+        </a>
+    </div>
+    {% else %}
+        <div class="col-md-12">
+            <div class="jumbotron">
+                <h2 class="text-center">
+                    Projet ODI M1 Informatique 2017
+                </h2>
+                <p>
+                    Bienvenue sur notre application web de gestion de questionnaires. <br>
+                    Cet outil vous permet de créer, gérer et analyser les questionnaires que
+                    vous publiez en ligne.<br>
+                    Si vous avez un compte cliquez sur le bouton connexion.
+                    Sinon inscrivez-vous!!<br>
+                    C'est rapide et gratuit!
+                </p>
+                <img class="img-rounded center-block" src="http://www.bloc.com/images_administrables/bibliotheque/grande/drag-n-survey.jpg" />
+                <!--<div class="row">
+                    <div class="col-md-6">
+                        <div class="thumbnail">
+                            <img alt="Bootstrap Thumbnail First" src="http://lorempixel.com/output/people-q-c-600-200-1.jpg" />
+                            <div class="caption">
+                                <h3>
+                                    Comment trouvez-vous le master ?
+                                </h3>
+                                <p>
+                                    Une question comme une autre
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="thumbnail">
+                            <img alt="Bootstrap Thumbnail Second" src="http://lorempixel.com/output/city-q-c-600-200-1.jpg" />
+                            <div class="caption">
+                                <h3>
+                                    Commment trouvez vous l'option ODI ?
+                                </h3>
+                                <p>
+                                    Très bien!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

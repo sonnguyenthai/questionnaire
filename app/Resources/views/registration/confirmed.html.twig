@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+    - Succès
+{% endblock %}
+
+{% block page_content_title %}
+    Confirmation
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12">
+        <div class="jumbotron">
+            <h2>
+                Bravo !
+            </h2>
+            <p>
+                Vous êtes maintenant inscrit(e). Créez vos questionnaires ou répondez dès maintenant aux nôtre en cliquant sur le bouton ci-dessous !!
+            </p>
+            <p>
+                <a class="btn btn-primary btn-large" href="{{ path('home') }}">Accueil</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

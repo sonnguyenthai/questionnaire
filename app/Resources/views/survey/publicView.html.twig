@@ -1,0 +1,44 @@
+{% extends "base.html.twig" %}
+
+{% block page_content_title %}
+    {{ survey.name }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form) }}
+    <ol>
+        <li class="form-group">
+            <h5> What is your name </h5>
+            <input type="text" class="form-control" name="respondent_name" required>
+        </li>
+        {% for question in survey.questions %}
+            <li class="form-group">
+                <h5>{{ question.question.content }}</h5>
+                {% if question.question.questionType=="text" %}
+                    <textarea name="answer_{{ question.id }}" class="form-control"></textarea>
+                {% elseif question.question.questionType=="single" %}
+                    <ul class="list-unstyled">
+                        {% for choice in question.question.choices %}
+                            <li class="radio">
+                                <input type="radio" name="answer_{{ question.id }}" value="{{ choice.id }}">{{ choice.content }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <ul class="list-unstyled">
+                        {% for choice in question.question.choices %}
+                            <li class="checkbox">
+                                <input type="checkbox" name="answer_{{ question.id }}[]" value="{{ choice.id }}">{{ choice.content }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ol>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Finish">
+    </div>
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,85 @@
+<?php
+
+namespace AppBundle\Entity;
+
+
+/**
+ * Class Choice
+ * @package AppBundle\Entity
+ */
+class Choice
+{
+    /**
+     * @var integer
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $content;
+
+    /**
+     * @var \AppBundle\Entity\Question
+     */
+    private $question;
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set content
+     *
+     * @param string $content
+     *
+     * @return Choice
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+
+        return $this;
+    }
+
+    /**
+     * Get content
+     *
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * Set question
+     *
+     * @param \AppBundle\Entity\Question $question
+     *
+     * @return Choice
+     */
+    public function setQuestion(\AppBundle\Entity\Question $question = null)
+    {
+        $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * Get question
+     *
+     * @return \AppBundle\Entity\Question
+     */
+    public function getQuestion()
+    {
+        return $this->question;
+    }
+}

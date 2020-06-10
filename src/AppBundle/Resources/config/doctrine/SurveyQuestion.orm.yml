@@ -1,0 +1,30 @@
+AppBundle\Entity\SurveyQuestion:
+    type:  entity
+    table: survey_question
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        created_date:
+            type: datetime
+            options:
+              default: 0
+    manyToOne:
+        question:
+          targetEntity: AppBundle\Entity\Question
+          joinColumn:
+            name: question_id
+            referencedColumnName: id
+            onDelete: CASCADE
+        survey:
+          targetEntity: AppBundle\Entity\Survey
+          joinColumn:
+            name: survey_id
+            referencedColumnName: id
+            onDelete: CASCADE
+    oneToMany:
+        answers:
+          targetEntity: AppBundle\Entity\Answer
+          mappedBy: survey_question
